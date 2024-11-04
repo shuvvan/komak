@@ -4,7 +4,7 @@
 </picture>
   </p> 
 <p align="center">
-<h1 align="center"/>کمک/h1>
+<h1 align="center"/>کمک</h1>
 <h6 align="center">همیار سرور<h6>
 </p>
 
