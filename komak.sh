@@ -7,7 +7,9 @@ NC='\033[0m'       # No color (reset)
 
 # Welcome message
 echo -e "${BOLD}${RED}Welcome to the Server Management Program!${NC}"
-echo -e "${BOLD}${RED}This program allows you to perform various tasks on your server.${NC}"
+
+# Display second line in normal format
+echo "This program allows you to perform various tasks on your server."
 
 # Display menu
 while true; do
