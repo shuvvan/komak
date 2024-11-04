@@ -15,7 +15,7 @@ welcome_message() {
     local box_width=$((len + 4))  # Width of the box (2 for padding and 2 for borders)
 
     # Calculate padding for center alignment
-    local padding=$(( (terminal_width - box_width) / 29 ))
+    local padding=$(( (terminal_width - box_width) / 2 ))
 
     # Print three empty lines for spacing
     printf "\n\n\n"
