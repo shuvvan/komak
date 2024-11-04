@@ -2,9 +2,9 @@
 
 # Define color codes
 RED='\033[0;31m'   # Red color
+BLUE='\033[0;34m'  # Blue color
 BOLD='\033[1m'     # Bold text
 PINK='\033[0;35m'  # Pink/Magenta color
-BLUE='\033[0;34m'  # Blue color
 NC='\033[0m'       # No color (reset)
 
 # Welcome message in a box
@@ -12,7 +12,7 @@ welcome_message() {
     local msg="Welcome to the Server Management Program!"
     local len=${#msg}
     echo -e "${RED}$(printf '%*s' "$len" '' | tr ' ' '#')${NC}"  # Top border
-    echo -e "${RED}# ${BOLD}${msg} ${RED}#${NC}"                   # Message
+    echo -e "${RED}# ${BOLD}${BLUE}${msg} ${RED}#${NC}"          # Message
     echo -e "${RED}$(printf '%*s' "$len" '' | tr ' ' '#')${NC}"  # Bottom border
 }
 
