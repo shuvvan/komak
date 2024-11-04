@@ -5,7 +5,7 @@ RED='\033[0;31m'   # Red color
 BOLD='\033[1m'     # Bold text
 NC='\033[0m'       # No color (reset)
 
-# Welcome message
+# Welcome message with bold and red color
 echo -e "${BOLD}${RED}Welcome to the Server Management Program!${NC}"
 
 # Display second line in normal format
