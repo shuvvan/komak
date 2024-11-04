@@ -18,24 +18,17 @@ NC='\033[0m'       # No color (reset)
 welcome_message() {
     local msg="Welcome to the Server Management Program!"
     local len=${#msg}
-    local terminal_width=$(tput cols)  # Get terminal width
-    local box_width=$((len + 4))  # Width of the box (2 for padding and 2 for borders)
-
-    # Calculate padding for center alignment
+    local terminal_width=$(tput cols)
+    local box_width=$((len + 4))
     local padding=$(( (terminal_width - box_width) / 2 ))
 
-    # Print three empty lines for spacing
     printf "\n\n\n"
-    
-    # Print top border
     printf "%*s" "$padding" ""
     echo -e "${RED}$(printf '%*s' "$box_width" '' | tr ' ' '#')${NC}"
     printf "%*s" "$padding" ""
     echo -e "${RED}# ${BOLD}${BLUE}${msg} ${RED}#${NC}"
     printf "%*s" "$padding" ""
     echo -e "${RED}$(printf '%*s' "$box_width" '' | tr ' ' '#')${NC}"
-    
-    # Print three empty lines for spacing
     printf "\n"
 }
 
@@ -44,7 +37,6 @@ welcome_message
 
 # Display second line in pink color
 echo -e "${PINK}This program allows you to perform various tasks on your server.${NC}"
-
 printf "\n"
 
 # Display options message in a dotted box
@@ -53,7 +45,6 @@ options_message() {
     local len=${#msg}
     local box_width=$((len + 4))
 
-    # Print dotted box without extra spacing or centering
     echo -e "${BLUE}$(printf '%*s' "$box_width" '' | tr ' ' '.')${NC}"
     echo -e "${BLUE}. ${BOLD}${msg}${NC} ."
     echo -e "${BLUE}$(printf '%*s' "$box_width" '' | tr ' ' '.')${NC}"
@@ -77,7 +68,6 @@ while true; do
         1)
             echo "Updating and upgrading the server..."
             sudo apt update && sudo apt upgrade -y
-            echo "Server successfully updated and upgraded."
             ;;
         2)
             echo "Enabling the firewall..."
