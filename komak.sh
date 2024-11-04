@@ -7,8 +7,17 @@ PINK='\033[0;35m'  # Pink/Magenta color
 BLUE='\033[0;34m'  # Blue color
 NC='\033[0m'       # No color (reset)
 
-# Welcome message with bold and red color
-echo -e "${BOLD}${RED}Welcome to the Server Management Program!${NC}"
+# Welcome message in a box
+welcome_message() {
+    local msg="Welcome to the Server Management Program!"
+    local len=${#msg}
+    echo -e "${RED}$(printf '%*s' "$len" '' | tr ' ' '#')${NC}"  # Top border
+    echo -e "${RED}# ${BOLD}${msg} ${RED}#${NC}"                   # Message
+    echo -e "${RED}$(printf '%*s' "$len" '' | tr ' ' '#')${NC}"  # Bottom border
+}
+
+# Display welcome message
+welcome_message
 
 # Display second line in pink color
 echo -e "${PINK}This program allows you to perform various tasks on your server.${NC}"
