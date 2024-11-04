@@ -44,20 +44,12 @@ printf "\n"
 options_message() {
     local msg="Please select an option:"
     local len=${#msg}
-    local terminal_width=$(tput cols)
     local box_width=$((len + 4))
 
-    local padding=$(( (terminal_width - box_width) / 2 ))
-
-    # Print dotted box
-    printf "\n"
-    printf "%*s" "$padding" ""
+    # Print dotted box without extra spacing or centering
     echo -e "${BLUE}$(printf '%*s' "$box_width" '' | tr ' ' '.')${NC}"
-    printf "%*s" "$padding" ""
     echo -e "${BLUE}. ${BOLD}${msg}${NC} ."
-    printf "%*s" "$padding" ""
     echo -e "${BLUE}$(printf '%*s' "$box_width" '' | tr ' ' '.')${NC}"
-    printf "\n"
 }
 
 # Display options message
@@ -65,17 +57,12 @@ options_message
 
 # Display menu
 while true; do
-    printf "\n\n"
     echo -e "${BLUE}1. Update/Upgrade Server${NC}"
-    printf "\n"
     echo -e "${BLUE}2. Check Server Status${NC}"
-    printf "\n"
     echo -e "${BLUE}3. Enable Firewall${NC}"
-    printf "\n"
     echo -e "${BLUE}4. Disable Firewall${NC}"
-    printf "\n"
     echo -e "${RED}5. Exit${NC}"
-    printf "\n\n"
+    printf "\n"
     read -p "Enter your choice: " choice
 
     case $choice in
@@ -86,7 +73,6 @@ while true; do
             ;;
         2)
             echo -e "${PINK}Server status:${NC}"
-            printf "\n"
             uptime
             ;;
         3)
@@ -101,7 +87,6 @@ while true; do
             ;;
         5)
             echo -e "${RED}Exiting the program.${NC}"
-            printf "\n"
             break
             ;;
         *)
