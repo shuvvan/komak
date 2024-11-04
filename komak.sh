@@ -1,8 +1,13 @@
 #!/bin/bash
 
+# Define color codes
+RED='\033[0;31m'   # Red color
+BOLD='\033[1m'     # Bold text
+NC='\033[0m'       # No color (reset)
+
 # Welcome message
-echo "Welcome to the Server Management Program!"
-echo "This program allows you to perform various tasks on your server."
+echo -e "${BOLD}${RED}Welcome to the Server Management Program!${NC}"
+echo -e "${BOLD}${RED}This program allows you to perform various tasks on your server.${NC}"
 
 # Display menu
 while true; do
