@@ -47,7 +47,6 @@ options_message() {
     local terminal_width=$(tput cols)
     local box_width=$((len + 4))
 
-    local padding=$(( (terminal_width - box_width) / 2 ))
 
     # Print dotted box
     printf "\n"
