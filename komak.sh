@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Check if the script is run as root; if not, switch to root
+if [ "$EUID" -ne 0 ]; then
+    echo "Switching to root user..."
+    sudo -i bash "$0" "$@"
+    exit
+fi
+
 # Define color codes
 RED='\033[0;31m'   # Red color
 BLUE='\033[0;34m'  # Blue color
