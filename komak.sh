@@ -36,12 +36,12 @@ welcome_message() {
 welcome_message
 
 # Display second line in pink color
-echo -e "${PINK}This program allows you to perform various tasks on your server.${NC}"
+echo -e "${PINK}This program allows you to perform various tasks on your server and created BY Shuvvan${NC}"
 printf "\n"
 
 # Display options message in a dotted box
 options_message() {
-    local msg="Please select an option:"
+    local msg="Please select an option"
     local len=${#msg}
     local box_width=$((len + 4))
 
