@@ -58,10 +58,10 @@ options_message
 # Display menu
 while true; do
     echo -e "${BLUE}1. Update/Upgrade Server${NC}"
-    echo -e "${BLUE}2. Check Server Status${NC}"
-    echo -e "${BLUE}3. Enable Firewall${NC}"
-    echo -e "${BLUE}4. Disable Firewall${NC}"
-    echo -e "${BLUE}5. Install Alireza Panel${NC}"
+    echo -e "${BLUE}2. Enable Firewall${NC}"
+    echo -e "${BLUE}3. Disable Firewall${NC}"
+    echo -e "${BLUE}4. Install Alireza Panel${NC}"
+    echo -e "${BLUE}5. Check Server Status${NC}"
     echo -e "${RED}6. Exit${NC}"
     printf "\n"
     read -p "Enter your choice: " choice
@@ -73,22 +73,22 @@ while true; do
             echo "Server successfully updated and upgraded."
             ;;
         2)
-            echo -e "${PINK}Server status:${NC}"
-            uptime
-            ;;
-        3)
             echo "Enabling the firewall..."
             sudo ufw enable
             echo "Firewall is now enabled."
             ;;
-        4)
+        3)
             echo "Disabling the firewall..."
             sudo ufw disable
             echo "Firewall is now disabled."
             ;;
-        5)
+        4)
             echo "Installing Alireza Panel..."
             bash <(curl -Ls https://raw.githubusercontent.com/alireza0/x-ui/master/install.sh)
+            ;;
+        5)
+            echo -e "${PINK}Server status:${NC}"
+            uptime
             ;;
         6)
             echo -e "${RED}Exiting the program.${NC}"
