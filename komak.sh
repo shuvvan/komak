@@ -12,7 +12,7 @@ welcome_message() {
     local msg="Welcome to the Server Management Program!"
     local len=${#msg}
     echo -e "${RED}$(printf '%*s' "$len" '' | tr ' ' '#')${NC}"  # Top border
-    echo -e "${RED}# ${BOLD}${BLUE}${msg} ${RED}#${NC}"          # Message
+    echo -e "${BOLD}${BLUE}${msg}${NC}"          # Message
     echo -e "${RED}$(printf '%*s' "$len" '' | tr ' ' '#')${NC}"  # Bottom border
 }
 
