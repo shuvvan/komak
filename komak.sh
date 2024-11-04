@@ -59,8 +59,9 @@ while true; do
     echo -e "${BLUE}2. Enable Firewall${NC}"
     echo -e "${BLUE}3. Disable Firewall${NC}"
     echo -e "${BLUE}4. Install Alireza Panel${NC}"
-    echo -e "${BLUE}5. Check Server Status${NC}"
-    echo -e "${RED}6. Exit${NC}"
+    echo -e "${BLUE}5. Install Sanaei Panel${NC}"
+    echo -e "${BLUE}6. Check Server Status${NC}"
+    echo -e "${RED}7. Exit${NC}"
     printf "\n"
     read -p "Enter your choice: " choice
 
@@ -84,10 +85,14 @@ while true; do
             bash <(curl -Ls https://raw.githubusercontent.com/alireza0/x-ui/master/install.sh)
             ;;
         5)
+            echo "Installing Sanaei Panel..."
+            bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)
+            ;;
+        6)
             echo -e "${PINK}Server status:${NC}"
             uptime
             ;;
-        6)
+        7)
             echo -e "${RED}Exiting the program.${NC}"
             break
             ;;
