@@ -29,7 +29,7 @@ welcome_message() {
     echo -e "${RED}$(printf '%*s' "$box_width" '' | tr ' ' '#')${NC}"  # Bottom border
     
     # Print three empty lines for spacing
-    printf "\n\n\n"
+    printf "\n"
 }
 
 # Display welcome message
@@ -38,13 +38,19 @@ welcome_message
 # Display second line in pink color
 echo -e "${PINK}This program allows you to perform various tasks on your server.${NC}"
 
+ printf "\n"
+ 
 # Display menu
 while true; do
     echo ""
     echo "Please select an option:"
+     printf "\n\n"
     echo -e "${BLUE}1. Update/Upgrade Server${NC}"
+     printf "\n"
     echo -e "${BLUE}2. Check Server Status${NC}"
+     printf "\n"
     echo -e "${RED}3. Exit${NC}"
+     printf "\n\n"
     read -p "Enter your choice: " choice
 
     case $choice in
