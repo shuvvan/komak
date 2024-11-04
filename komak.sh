@@ -42,7 +42,7 @@ printf "\n"
 
 # Display options message in a dotted box
 options_message() {
-    local msg="Please select an option:"
+    local msg="Please select an option"
     local len=${#msg}
     local box_width=$((len + 4))
 
