@@ -1,6 +1,6 @@
 <p align="center">
 <picture>
-<img alt="کمک" src="https://raw.githubusercontent.com/shuvvan/komak/refs/heads/main/komak.png">
+<img width="290" height="280"  alt="کمک" src="https://raw.githubusercontent.com/shuvvan/komak/refs/heads/main/komak.png">
 </picture>
   </p> 
 <p align="center">
