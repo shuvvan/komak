@@ -42,7 +42,7 @@ printf "\n"
 
 # Display options message in a dotted box
 options_message() {
-    local msg="Please select an option"
+    local msg="Please select an option:"
     local len=${#msg}
     local box_width=$((len + 4))
 
@@ -61,8 +61,8 @@ while true; do
     echo -e "${BLUE}2. Check Server Status${NC}"
     echo -e "${BLUE}3. Enable Firewall${NC}"
     echo -e "${BLUE}4. Disable Firewall${NC}"
-    printf "\n"
-    echo -e "${RED}5. Exit${NC}"
+    echo -e "${BLUE}5. Install Alireza Panel${NC}"
+    echo -e "${RED}6. Exit${NC}"
     printf "\n"
     read -p "Enter your choice: " choice
 
@@ -87,6 +87,10 @@ while true; do
             echo "Firewall is now disabled."
             ;;
         5)
+            echo "Installing Alireza Panel..."
+            bash <(curl -Ls https://raw.githubusercontent.com/alireza0/x-ui/master/install.sh)
+            ;;
+        6)
             echo -e "${RED}Exiting the program.${NC}"
             break
             ;;
