@@ -61,10 +61,12 @@ while true; do
             ;;
         2)
             echo -e "${PINK}Server status:${NC}"
+            printf "\n"
             uptime
             ;;
         3)
             echo -e "${RED}Exiting the program.${NC}"
+            printf "\n"
             break
             ;;
         *)
