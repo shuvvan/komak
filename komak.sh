@@ -11,14 +11,17 @@ NC='\033[0m'       # No color (reset)
 welcome_message() {
     local msg="Welcome to the Server Management Program!"
     local len=${#msg}
-    
+    local terminal_width=$(tput cols)  # Get terminal width
+    local padding=$(( (terminal_width - len - 4) / 2 ))  # Calculate padding for center alignment
+
     # Print three empty lines for spacing
     printf "\n\n\n"
     
     # Print top border
-    echo -e "${RED}$(printf '%*s' "$len" '' | tr ' ' '#')${NC}"  # Top border
+    echo -e "${RED}$(printf '%*s' "$terminal_width" '' | tr ' ' '#')${NC}"  # Top border
+    printf "%*s" "$padding" ""  # Padding for left space
     echo -e "${RED}# ${BOLD}${BLUE}${msg} ${RED}#${NC}"          # Message
-    echo -e "${RED}$(printf '%*s' "$len" '' | tr ' ' '#')${NC}"  # Bottom border
+    echo -e "${RED}$(printf '%*s' "$terminal_width" '' | tr ' ' '#')${NC}"  # Bottom border
     
     # Print three empty lines for spacing
     printf "\n\n\n"
