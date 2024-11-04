@@ -11,9 +11,17 @@ NC='\033[0m'       # No color (reset)
 welcome_message() {
     local msg="Welcome to the Server Management Program!"
     local len=${#msg}
+    
+    # Print three empty lines for spacing
+    printf "\n\n\n"
+    
+    # Print top border
     echo -e "${RED}$(printf '%*s' "$len" '' | tr ' ' '#')${NC}"  # Top border
-    echo -e "${BOLD}${BLUE}${msg}${NC}"          # Message
+    echo -e "${RED}# ${BOLD}${BLUE}${msg} ${RED}#${NC}"          # Message
     echo -e "${RED}$(printf '%*s' "$len" '' | tr ' ' '#')${NC}"  # Bottom border
+    
+    # Print three empty lines for spacing
+    printf "\n\n\n"
 }
 
 # Display welcome message
