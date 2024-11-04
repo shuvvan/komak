@@ -63,7 +63,17 @@ while true; do
     echo -e "${BLUE}6. Check Server Status${NC}"
     echo -e "${RED}7. Exit${NC}"
     printf "\n"
-    read -p "Enter your choice: " choice
+    
+    # Capture user input with escape key detection
+    read -p "Enter your choice (or press Esc to exit): " -n1 -s choice
+    
+    # Check if the pressed key is the Escape key (ASCII code 27)
+    if [[ $choice == $'\e' ]]; then
+        echo -e "\n${RED}Exiting the program.${NC}"
+        break
+    fi
+
+    echo  # For formatting (new line after choice)
 
     case $choice in
         1)
