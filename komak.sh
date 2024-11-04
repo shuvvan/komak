@@ -29,7 +29,7 @@ while true; do
             echo "Server successfully updated and upgraded."
             ;;
         2)
-            echo "Server status:"
+            echo -e "${PINK}Server status:${NC}"
             uptime
             ;;
         3)
