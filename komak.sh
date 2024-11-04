@@ -21,12 +21,12 @@ welcome_message() {
     printf "\n\n\n"
     
     # Print top border
-    printf "%*s" "$padding" ""  # Padding for left space
-    echo -e "${RED}$(printf '%*s' "$box_width" '' | tr ' ' '#')${NC}"  # Top border
-    printf "%*s" "$padding" ""  # Padding for left space
-    echo -e "${RED}# ${BOLD}${BLUE}${msg} ${RED}#${NC}"          # Message
-    printf "%*s" "$padding" ""  # Padding for left space
-    echo -e "${RED}$(printf '%*s' "$box_width" '' | tr ' ' '#')${NC}"  # Bottom border
+    printf "%*s" "$padding" ""
+    echo -e "${RED}$(printf '%*s' "$box_width" '' | tr ' ' '#')${NC}"
+    printf "%*s" "$padding" ""
+    echo -e "${RED}# ${BOLD}${BLUE}${msg} ${RED}#${NC}"
+    printf "%*s" "$padding" ""
+    echo -e "${RED}$(printf '%*s' "$box_width" '' | tr ' ' '#')${NC}"
     
     # Print three empty lines for spacing
     printf "\n"
@@ -39,11 +39,32 @@ welcome_message
 echo -e "${PINK}This program allows you to perform various tasks on your server.${NC}"
 
 printf "\n"
- 
+
+# Display options message in a dotted box
+options_message() {
+    local msg="Please select an option:"
+    local len=${#msg}
+    local terminal_width=$(tput cols)
+    local box_width=$((len + 4))
+
+    local padding=$(( (terminal_width - box_width) / 2 ))
+
+    # Print dotted box
+    printf "\n"
+    printf "%*s" "$padding" ""
+    echo -e "${BLUE}$(printf '%*s' "$box_width" '' | tr ' ' '.')${NC}"
+    printf "%*s" "$padding" ""
+    echo -e "${BLUE}. ${BOLD}${msg}${NC} ."
+    printf "%*s" "$padding" ""
+    echo -e "${BLUE}$(printf '%*s' "$box_width" '' | tr ' ' '.')${NC}"
+    printf "\n"
+}
+
+# Display options message
+options_message
+
 # Display menu
 while true; do
-    echo ""
-    echo "Please select an option:"
     printf "\n\n"
     echo -e "${BLUE}1. Update/Upgrade Server${NC}"
     printf "\n"
