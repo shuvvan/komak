@@ -44,13 +44,15 @@ echo -e "${PINK}This program allows you to perform various tasks on your server.
 while true; do
     echo ""
     echo "Please select an option:"
-     printf "\n\n"
+    printf "\n\n"
     echo -e "${BLUE}1. Update/Upgrade Server${NC}"
-     printf "\n"
+    printf "\n"
     echo -e "${BLUE}2. Check Server Status${NC}"
-     printf "\n"
-    echo -e "${RED}3. Exit${NC}"
-     printf "\n\n"
+    printf "\n"
+    echo -e "${BLUE}3. Switch to Superuser (Admin)${NC}"
+    printf "\n"
+    echo -e "${RED}4. Exit${NC}"
+    printf "\n\n"
     read -p "Enter your choice: " choice
 
     case $choice in
@@ -65,6 +67,10 @@ while true; do
             uptime
             ;;
         3)
+            echo "Switching to superuser (admin)..."
+            sudo -i
+            ;;
+        4)
             echo -e "${RED}Exiting the program.${NC}"
             printf "\n"
             break
