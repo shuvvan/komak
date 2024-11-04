@@ -58,9 +58,13 @@ options_message
 # Display menu
 while true; do
     echo -e "${BLUE}1. Update/Upgrade Server${NC}"
+    printf "\n"
     echo -e "${BLUE}2. Check Server Status${NC}"
+    printf "\n"
     echo -e "${BLUE}3. Enable Firewall${NC}"
+    printf "\n"
     echo -e "${BLUE}4. Disable Firewall${NC}"
+    printf "\n"
     echo -e "${RED}5. Exit${NC}"
     printf "\n"
     read -p "Enter your choice: " choice
