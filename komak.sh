@@ -3,13 +3,14 @@
 # Define color codes
 RED='\033[0;31m'   # Red color
 BOLD='\033[1m'     # Bold text
+PINK='\033[0;35m'  # Pink/Magenta color
 NC='\033[0m'       # No color (reset)
 
 # Welcome message with bold and red color
 echo -e "${BOLD}${RED}Welcome to the Server Management Program!${NC}"
 
-# Display second line in normal format
-echo "This program allows you to perform various tasks on your server."
+# Display second line in pink color
+echo -e "${PINK}This program allows you to perform various tasks on your server.${NC}"
 
 # Display menu
 while true; do
