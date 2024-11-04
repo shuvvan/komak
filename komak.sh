@@ -49,7 +49,6 @@ options_message() {
 
 
     # Print dotted box
-    printf "\n"
     printf "%*s" "$padding" ""
     echo -e "${BLUE}$(printf '%*s' "$box_width" '' | tr ' ' '.')${NC}"
     printf "%*s" "$padding" ""
