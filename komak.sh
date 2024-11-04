@@ -38,7 +38,7 @@ welcome_message
 # Display second line in pink color
 echo -e "${PINK}This program allows you to perform various tasks on your server.${NC}"
 
- printf "\n"
+printf "\n"
  
 # Display menu
 while true; do
@@ -49,9 +49,11 @@ while true; do
     printf "\n"
     echo -e "${BLUE}2. Check Server Status${NC}"
     printf "\n"
-    echo -e "${BLUE}3. Switch to Superuser (Admin)${NC}"
+    echo -e "${BLUE}3. Enable Firewall${NC}"
     printf "\n"
-    echo -e "${RED}4. Exit${NC}"
+    echo -e "${BLUE}4. Disable Firewall${NC}"
+    printf "\n"
+    echo -e "${RED}5. Exit${NC}"
     printf "\n\n"
     read -p "Enter your choice: " choice
 
@@ -67,10 +69,16 @@ while true; do
             uptime
             ;;
         3)
-            echo "Switching to superuser (admin)..."
-            sudo -i
+            echo "Enabling the firewall..."
+            sudo ufw enable
+            echo "Firewall is now enabled."
             ;;
         4)
+            echo "Disabling the firewall..."
+            sudo ufw disable
+            echo "Firewall is now disabled."
+            ;;
+        5)
             echo -e "${RED}Exiting the program.${NC}"
             printf "\n"
             break
