@@ -4,6 +4,7 @@
 RED='\033[0;31m'   # Red color
 BOLD='\033[1m'     # Bold text
 PINK='\033[0;35m'  # Pink/Magenta color
+BLUE='\033[0;34m'  # Blue color
 NC='\033[0m'       # No color (reset)
 
 # Welcome message with bold and red color
@@ -16,9 +17,9 @@ echo -e "${PINK}This program allows you to perform various tasks on your server.
 while true; do
     echo ""
     echo "Please select an option:"
-    echo "1. Update/Upgrade Server"
-    echo "2. Check Server Status"
-    echo "3. Exit"
+    echo -e "${BLUE}1. Update/Upgrade Server${NC}"
+    echo -e "${BLUE}2. Check Server Status${NC}"
+    echo -e "${RED}3. Exit${NC}"
     read -p "Enter your choice: " choice
 
     case $choice in
@@ -32,7 +33,7 @@ while true; do
             uptime
             ;;
         3)
-            echo "Exiting the program."
+            echo -e "${RED}Exiting the program.${NC}"
             break
             ;;
         *)
