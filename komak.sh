@@ -1,35 +1,34 @@
 #!/bin/bash
 
-# خوش آمدگویی
-echo "به برنامه مدیریت سرور خوش آمدید!"
-echo "این برنامه به شما امکان می‌دهد کارهای مختلفی روی سرور انجام دهید."
+# Welcome message
+echo "Welcome to the Server Management Program!"
+echo "This program allows you to perform various tasks on your server."
 
-# نمایش منو
+# Display menu
 while true; do
     echo ""
-    echo "لطفاً یکی از گزینه‌های زیر را انتخاب کنید:"
-    echo "1. آپدیت/آپگریت سرور"
-    echo "2. وضعیت سرور"
-    echo "3. خروج"
-    read -p "گزینه مورد نظر را وارد کنید: " choice
+    echo "Please select an option:"
+    echo "1. Update/Upgrade Server"
+    echo "2. Check Server Status"
+    echo "3. Exit"
+    read -p "Enter your choice: " choice
 
     case $choice in
         1)
-            echo "در حال آپدیت و آپگریت سرور..."
+            echo "Updating and upgrading the server..."
             sudo apt update && sudo apt upgrade -y
-            echo "سرور با موفقیت آپدیت و آپگریت شد."
+            echo "Server successfully updated and upgraded."
             ;;
         2)
-            echo "وضعیت سرور:"
+            echo "Server status:"
             uptime
             ;;
         3)
-            echo "خروج از برنامه."
+            echo "Exiting the program."
             break
             ;;
         *)
-            echo "لطفاً یک گزینه معتبر وارد کنید."
+            echo "Please enter a valid option."
             ;;
     esac
 done
-
