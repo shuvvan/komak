@@ -1,1 +1,2 @@
-bash <(curl -Ls https://raw.githubusercontent.com/shuvvan/komak/main/komak.py)
+
+bash <(curl -Ls https://raw.githubusercontent.com/shuvvan/komak/main/komak.sh)
