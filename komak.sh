@@ -30,7 +30,7 @@ while true; do
             ;;
         2)
             echo -e "${PINK}Server status:${NC}"
-            ${PINK}uptime${NC}
+            uptime
             ;;
         3)
             echo -e "${RED}Exiting the program.${NC}"
