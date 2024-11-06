@@ -3,7 +3,7 @@
 # Check if the script is run as root; if not, switch to root
 if [ "$EUID" -ne 0 ]; then
     echo "Switching to root user..."
-    sudo -i bash "$0" "$@"
+    sudo bash "$0" "$@"  # Use `sudo bash` to rerun the script with root permissions
     exit
 fi
 
