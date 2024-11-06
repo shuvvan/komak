@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Check if the script is run as root; if not, switch to root
+# Check if the script is run as root; if not, restart with sudo
 if [ "$EUID" -ne 0 ]; then
-    echo "Switching to root user..."
-    sudo bash "$0" "$@"  # Use `sudo bash` to rerun the script with root permissions
+    echo "Switching to root user love..."
+    exec sudo bash "$0" "$@"
     exit
 fi
 
@@ -63,10 +63,10 @@ while true; do
     echo -e "${BLUE}6. Check Server Status${NC}"
     echo -e "${RED}7. Exit${NC}"
     printf "\n"
-    
+
     # Capture user input with escape key detection
     read -p "Enter your choice (or press Esc to exit): " -n1 -s choice
-    
+
     # Check if the pressed key is the Escape key (ASCII code 27)
     if [[ $choice == $'\e' ]]; then
         echo -e "\n${RED}Exiting the program.${NC}"
