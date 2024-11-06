@@ -2,7 +2,7 @@
 
 # Check if the script is run as root; if not, switch to root
 if [ "$EUID" -ne 0 ]; then
-    echo "Switching to root user..."
+    echo "Switching to root user dear..."
     sudo -i bash "$0" "$@"
     exit
 fi
