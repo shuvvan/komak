@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# Check if the script is run as root; if not, switch to root
-if [ "$EUID" -ne 0 ]; then
-    echo "Switching to root user my dear..."
-    sudo -i bash "$0" "$@"
-    exit
-fi
-
 # Define color codes
 RED='\033[0;31m'   # Red color
 BLUE='\033[0;34m'  # Blue color
@@ -36,7 +29,7 @@ welcome_message() {
 welcome_message
 
 # Display second line in pink color
-echo -e "${PINK}This program allows you to perform various tasks on your server and created BY Shuvvan${NC}"
+echo -e "${PINK}This program allows you to perform various tasks on your server.${NC}"
 printf "\n"
 
 # Display options message in a dotted box
@@ -63,17 +56,14 @@ while true; do
     echo -e "${BLUE}6. Check Server Status${NC}"
     echo -e "${RED}7. Exit${NC}"
     printf "\n"
-    
-    # Capture user input with escape key detection
-    read -p "Enter your choice (or press Esc to exit): " -n1 -s choice
-    
-    # Check if the pressed key is the Escape key (ASCII code 27)
+    read -p "Enter your choice (or press ESC to exit): " -n1 choice
+    echo
+
+    # Exit on ESC key (ASCII code 27)
     if [[ $choice == $'\e' ]]; then
-        echo -e "\n${RED}Exiting the program.${NC}"
+        echo -e "${RED}Exiting the program.${NC}"
         break
     fi
-
-    echo  # For formatting (new line after choice)
 
     case $choice in
         1)
