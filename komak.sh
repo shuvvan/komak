@@ -29,7 +29,7 @@ welcome_message() {
 welcome_message
 
 # Display second line in pink color
-echo -e "${PINK}This program allows you to perform various tasks on your server and created BY Shuvvan${NC}"
+echo -e "${PINK}This program allows you to perform various tasks on your server, created by Shuvvan${NC}"
 printf "\n"
 
 # Display server status and IP addresses
@@ -62,37 +62,44 @@ while true; do
     echo -e "${BLUE}5. Install Sanaei Panel${NC}"
     echo -e "${RED}6. Exit (or press ESC)${NC}"
     printf "\n"
-    read -p "Enter your choice: " choice
+    
+    # Read choice with timeout and interpret ESC key
+    read -rsn1 -p "Enter your choice: " choice  # Read a single character input
+    if [[ $choice == $'\e' ]]; then
+        echo -e "\n${RED}Exiting the program.${NC}"
+        break
+    fi
 
+    # Execute based on numeric choice
     case $choice in
         1)
-            echo "Updating and upgrading the server..."
+            echo -e "\nUpdating and upgrading the server..."
             sudo apt update && sudo apt upgrade -y
             ;;
         2)
-            echo "Enabling the firewall..."
+            echo -e "\nEnabling the firewall..."
             sudo ufw enable
             echo "Firewall is now enabled."
             ;;
         3)
-            echo "Disabling the firewall..."
+            echo -e "\nDisabling the firewall..."
             sudo ufw disable
             echo "Firewall is now disabled."
             ;;
         4)
-            echo "Installing Alireza Panel..."
+            echo -e "\nInstalling Alireza Panel..."
             bash <(curl -Ls https://raw.githubusercontent.com/alireza0/x-ui/master/install.sh)
             ;;
         5)
-            echo "Installing Sanaei Panel..."
+            echo -e "\nInstalling Sanaei Panel..."
             bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)
             ;;
         6)
-            echo -e "${RED}Exiting the program.${NC}"
+            echo -e "\n${RED}Exiting the program.${NC}"
             break
             ;;
         *)
-            echo "Please enter a valid option."
+            echo -e "\nPlease enter a valid option."
             ;;
     esac
 done
