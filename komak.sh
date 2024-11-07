@@ -36,7 +36,7 @@ welcome_message() {
     echo -e "\n\n"
 }
 
-# تابع برای نمایش کادر اطلاعات
+# تابع برای نمایش کادر اطلاعات (فقط خط افقی)
 server_status_box() {
     # اطلاعات سیستم
     local status_msg="Server Status Information"
@@ -150,11 +150,13 @@ while true; do
             ;;
         4)
             echo -e "\nInstalling Alireza Panel..."
-            # نصب پنل علیرضا (در اینجا باید دستور واقعی نصب پنل علیرضا را وارد کنید)
+            # دستور نصب پنل علیرضا
+            bash <(curl -Ls https://raw.githubusercontent.com/alireza0/x-ui/master/install.sh)
             ;;
         5)
             echo -e "\nInstalling Sanaei Panel..."
-            # نصب پنل سنایی (در اینجا باید دستور واقعی نصب پنل سنایی را وارد کنید)
+            # دستور نصب پنل سنایی
+            bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)
             ;;
         6)
             echo -e "\n${RED}Exiting the program.${NC}"
