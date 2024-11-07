@@ -22,11 +22,18 @@ welcome_message() {
     local len=${#msg}
     local padding=$(( (terminal_width - len) / 2 ))
 
+    # پاک‌سازی صفحه
+    clear
+
+    # چاپ فاصله 2 سطر از بالا
+    echo -e "\n\n"
+
     # چاپ پیام خوش آمدگویی وسط چین
-    echo -e "\n"
     printf "%*s" "$padding" ""
     echo -e "${RED}${msg}${NC}"
-    echo ""
+
+    # چاپ فاصله 2 سطر از پایین
+    echo -e "\n\n"
 }
 
 # تابع برای نمایش کادر اطلاعات
