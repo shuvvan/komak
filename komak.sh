@@ -9,26 +9,25 @@ PINK='\033[0;35m'      # Pink/Magenta color
 CYAN='\033[0;36m'      # Cyan color (for box border)
 NC='\033[0m'           # No color (reset)
 
-# Welcome message in a box
-welcome_message() {
-    local msg="Welcome to the Server Management Program!"
-    local len=${#msg}
-    local terminal_width=$(tput cols)
-    local box_width=$((len + 4))
-    local padding=$(( (terminal_width - box_width) / 2 ))
-
-    printf "\n\n\n"
-    printf "%*s" "$padding" ""
-    echo -e "${RED}$(printf '%*s' "$box_width" '' | tr ' ' '-')${NC}"
-    printf "%*s" "$padding" ""
-    echo -e "${RED}- ${BOLD}${BLUE}${msg} ${RED}-${NC}"
-    printf "%*s" "$padding" ""
-    echo -e "${RED}$(printf '%*s' "$box_width" '' | tr ' ' '-')${NC}"
-    printf "\n"
+# Function to print a horizontal line that adjusts based on terminal width
+print_line() {
+    local width=$(tput cols)  # Get the current terminal width
+    printf "%*s" "$width" "" | tr ' ' '-'
 }
 
-# Display welcome message
-welcome_message
+# Welcome message with less space
+welcome_message() {
+    local msg="Welcome to the Server Management Program!"
+    local terminal_width=$(tput cols)
+    local len=${#msg}
+    local padding=$(( (terminal_width - len) / 2 ))
+
+    # Print the welcome message
+    echo -e "\n"
+    printf "%*s" "$padding" ""
+    echo -e "${RED}${msg}${NC}"
+    echo ""
+}
 
 # Display server status in a centered dashed box with equal margins
 server_status_box() {
@@ -55,36 +54,27 @@ server_status_box() {
     # System load
     local system_load=$(uptime | awk -F'load average:' '{print $2}' | cut -d',' -f1 | xargs)
 
-    # Define message length and terminal width
-    local msg_length=${#status_msg}
-    local max_length=60  # Fixed box width for better center alignment
-    local terminal_width=$(tput cols)
-    local padding=$(( (terminal_width - max_length) / 2 ))
+    # Print the top horizontal line that spans the full width of the terminal
+    print_line
+    echo -e "${CYAN}| ${BOLD}${GREEN}${status_msg}${NC} |"
+    print_line
 
-    # Print box border and content
-    printf "\n\n\n"
-    printf "%*s" "$padding" ""
-    echo -e "${CYAN}$(printf '%*s' "$max_length" '' | tr ' ' '-')${NC}"
-    printf "%*s" "$padding" ""
-    echo -e "${CYAN}- ${BOLD}${GREEN}${status_msg}${NC} ${CYAN}-${NC}"
-    printf "%*s" "$padding" ""
-    echo -e "${CYAN}-${NC} ${PINK}Uptime: ${NC}$uptime_info ${CYAN}-${NC}"
-    printf "%*s" "$padding" ""
-    echo -e "${CYAN}-${NC} ${RED}IPv4 Address: ${NC}$ipv4 ${CYAN}-${NC}"
-    printf "%*s" "$padding" ""
-    echo -e "${CYAN}-${NC} ${RED}IPv6 Address: ${NC}$ipv6 ${CYAN}-${NC}"
-    printf "%*s" "$padding" ""
-    echo -e "${CYAN}-${NC} ${GREEN}CPU: ${NC}${cpu_processes} Processes and ${cpu_usage} usage ${CYAN}-${NC}"
-    printf "%*s" "$padding" ""
-    echo -e "${CYAN}-${NC} ${GREEN}RAM: ${NC}${ram_total}M total, ${ram_used}M used (${ram_usage_percent}% usage) ${CYAN}-${NC}"
-    printf "%*s" "$padding" ""
-    echo -e "${CYAN}-${NC} ${GREEN}Swap: ${NC}${swap_total}M total, ${swap_used}M used (${swap_usage_percent}% usage) ${CYAN}-${NC}"
-    printf "%*s" "$padding" ""
-    echo -e "${CYAN}-${NC} ${GREEN}System load:${NC} ${system_load} ${CYAN}-${NC}"
-    printf "%*s" "$padding" ""
-    echo -e "${CYAN}$(printf '%*s' "$max_length" '' | tr ' ' '-')${NC}"
-    printf "\n"
+    # Display each information item with a vertical border
+    echo -e "${CYAN}| ${BOLD}${PINK}Uptime:${NC} ${uptime_info} ${CYAN}|"
+    echo -e "${CYAN}| ${BOLD}${RED}IPv4 Address:${NC} ${ipv4} ${CYAN}|"
+    echo -e "${CYAN}| ${BOLD}${RED}IPv6 Address:${NC} ${ipv6} ${CYAN}|"
+    echo -e "${CYAN}| ${BOLD}${GREEN}CPU:${NC} ${cpu_processes} Processes and ${cpu_usage} usage ${CYAN}|"
+    echo -e "${CYAN}| ${BOLD}${GREEN}RAM:${NC} ${ram_total}M total, ${ram_used}M used (${ram_usage_percent}% usage) ${CYAN}|"
+    echo -e "${CYAN}| ${BOLD}${GREEN}Swap:${NC} ${swap_total}M total, ${swap_used}M used (${swap_usage_percent}% usage) ${CYAN}|"
+    echo -e "${CYAN}| ${BOLD}${GREEN}System load:${NC} ${system_load} ${CYAN}|"
+
+    # Print the bottom horizontal line that spans the full width of the terminal
+    print_line
+    echo ""
 }
+
+# Display welcome message
+welcome_message
 
 # Display server status box
 server_status_box
@@ -95,6 +85,7 @@ options_message() {
     local len=${#msg}
     local box_width=$((len + 4))
 
+    # Print the dotted box
     echo -e "${BLUE}$(printf '%*s' "$box_width" '' | tr ' ' '.')${NC}"
     echo -e "${BLUE}. ${BOLD}${msg}${NC} ."
     echo -e "${BLUE}$(printf '%*s' "$box_width" '' | tr ' ' '.')${NC}"
