@@ -1,11 +1,13 @@
 #!/bin/bash
 
 # Define color codes
-RED='\033[0;31m'   # Red color
-BLUE='\033[0;34m'  # Blue color
-BOLD='\033[1m'     # Bold text
-PINK='\033[0;35m'  # Pink/Magenta color
-NC='\033[0m'       # No color (reset)
+RED='\033[0;31m'       # Red color
+BLUE='\033[0;34m'      # Blue color
+GREEN='\033[0;32m'     # Green color
+BOLD='\033[1m'         # Bold text
+PINK='\033[0;35m'      # Pink/Magenta color
+CYAN='\033[0;36m'      # Cyan color (for box border)
+NC='\033[0m'           # No color (reset)
 
 # Welcome message in a box
 welcome_message() {
@@ -28,16 +30,35 @@ welcome_message() {
 # Display welcome message
 welcome_message
 
-# Display second line in pink color
-echo -e "${PINK}This program allows you to perform various tasks on your server, created by Shuvvan${NC}"
-printf "\n"
+# Server status in a starred box with different border color
+server_status_box() {
+    local status_msg="Server Status Information"
+    local uptime_info=$(uptime)
+    local ipv4=$(hostname -I | awk '{print $1}')
+    local ipv6=$(ip -6 addr show | grep 'inet6' | awk '{print $2}' | head -n 1)
+    
+    local msg_length=${#status_msg}
+    local uptime_length=${#uptime_info}
+    local ipv4_length=${#ipv4}
+    local ipv6_length=${#ipv6}
+    
+    # Find the maximum line length
+    local max_length=$((msg_length > uptime_length ? msg_length : uptime_length))
+    max_length=$((max_length > ipv4_length ? max_length : ipv4_length))
+    max_length=$((max_length > ipv6_length ? max_length : ipv6_length))
+    max_length=$((max_length + 4))  # Padding for box width
 
-# Display server status and IP addresses
-echo -e "${PINK}Server status:${NC}"
-uptime
-echo -e "${RED}IPv4 Address:${NC} $(hostname -I | awk '{print $1}')"
-echo -e "${RED}IPv6 Address:${NC} $(ip -6 addr show | grep 'inet6' | awk '{print $2}' | head -n 1)"
-printf "\n"
+    echo -e "${CYAN}$(printf '%*s' "$max_length" '' | tr ' ' '*')${NC}"
+    echo -e "${CYAN}* ${BOLD}${GREEN}${status_msg}${NC} ${CYAN}*${NC}"
+    echo -e "${CYAN}*${NC} ${PINK}Uptime: ${NC}$uptime_info ${CYAN}*${NC}"
+    echo -e "${CYAN}*${NC} ${RED}IPv4 Address: ${NC}$ipv4 ${CYAN}*${NC}"
+    echo -e "${CYAN}*${NC} ${RED}IPv6 Address: ${NC}$ipv6 ${CYAN}*${NC}"
+    echo -e "${CYAN}$(printf '%*s' "$max_length" '' | tr ' ' '*')${NC}"
+    printf "\n"
+}
+
+# Display server status box
+server_status_box
 
 # Display options message in a dotted box
 options_message() {
