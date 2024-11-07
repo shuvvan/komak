@@ -30,29 +30,41 @@ welcome_message() {
 # Display welcome message
 welcome_message
 
-# Server status in a starred box with different border color
+# Display server status in a centered starred box with border color
 server_status_box() {
+    # Gather server information
     local status_msg="Server Status Information"
-    local uptime_info=$(uptime)
+    local uptime_info=$(uptime -p)
     local ipv4=$(hostname -I | awk '{print $1}')
     local ipv6=$(ip -6 addr show | grep 'inet6' | awk '{print $2}' | head -n 1)
     
-    local msg_length=${#status_msg}
-    local uptime_length=${#uptime_info}
-    local ipv4_length=${#ipv4}
-    local ipv6_length=${#ipv6}
-    
-    # Find the maximum line length
-    local max_length=$((msg_length > uptime_length ? msg_length : uptime_length))
-    max_length=$((max_length > ipv4_length ? max_length : ipv4_length))
-    max_length=$((max_length > ipv6_length ? max_length : ipv6_length))
-    max_length=$((max_length + 4))  # Padding for box width
+    # CPU Usage information and bar graph
+    local cpu_usage=$(top -bn1 | grep "Cpu(s)" | awk '{print 100 - $8"%"}')
+    local cpu_percent=${cpu_usage/\%/}   # Remove % sign
+    local cpu_bar_length=$((cpu_percent / 5))  # Scale to fit within 20 bars
+    local cpu_bar=$(printf "%-${cpu_bar_length}s" "" | tr ' ' '#')
 
+    # Define message length and terminal width
+    local msg_length=${#status_msg}
+    local max_length=50  # Fixed box width for better center alignment
+    local terminal_width=$(tput cols)
+    local padding=$(( (terminal_width - max_length) / 2 ))
+
+    # Print box border and content
+    printf "\n\n\n"
+    printf "%*s" "$padding" ""
     echo -e "${CYAN}$(printf '%*s' "$max_length" '' | tr ' ' '*')${NC}"
+    printf "%*s" "$padding" ""
     echo -e "${CYAN}* ${BOLD}${GREEN}${status_msg}${NC} ${CYAN}*${NC}"
+    printf "%*s" "$padding" ""
     echo -e "${CYAN}*${NC} ${PINK}Uptime: ${NC}$uptime_info ${CYAN}*${NC}"
+    printf "%*s" "$padding" ""
     echo -e "${CYAN}*${NC} ${RED}IPv4 Address: ${NC}$ipv4 ${CYAN}*${NC}"
+    printf "%*s" "$padding" ""
     echo -e "${CYAN}*${NC} ${RED}IPv6 Address: ${NC}$ipv6 ${CYAN}*${NC}"
+    printf "%*s" "$padding" ""
+    echo -e "${CYAN}*${NC} ${GREEN}CPU Usage: ${NC}$cpu_usage [${cpu_bar}${NC}] ${CYAN}*${NC}"
+    printf "%*s" "$padding" ""
     echo -e "${CYAN}$(printf '%*s' "$max_length" '' | tr ' ' '*')${NC}"
     printf "\n"
 }
