@@ -120,7 +120,9 @@ while true; do
     echo -e "${BLUE}1. Update/Upgrade Server${NC}"
     echo -e "${BLUE}2. Enable Firewall${NC}"
     echo -e "${BLUE}3. Disable Firewall${NC}"
-    echo -e "${RED}4. Exit (or press ESC)${NC}"
+    echo -e "${BLUE}4. Install Alireza Panel${NC}"
+    echo -e "${BLUE}5. Install Sanaei Panel${NC}"
+    echo -e "${RED}6. Exit (or press ESC)${NC}"
     printf "\n"
     
     # خواندن ورودی کاربر
@@ -147,6 +149,14 @@ while true; do
             echo "Firewall is now disabled."
             ;;
         4)
+            echo -e "\nInstalling Alireza Panel..."
+            # نصب پنل علیرضا (در اینجا باید دستور واقعی نصب پنل علیرضا را وارد کنید)
+            ;;
+        5)
+            echo -e "\nInstalling Sanaei Panel..."
+            # نصب پنل سنایی (در اینجا باید دستور واقعی نصب پنل سنایی را وارد کنید)
+            ;;
+        6)
             echo -e "\n${RED}Exiting the program.${NC}"
             break
             ;;
