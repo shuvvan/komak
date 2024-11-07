@@ -29,7 +29,14 @@ welcome_message() {
 welcome_message
 
 # Display second line in pink color
-echo -e "${PINK}This program allows you to perform various tasks on your server.${NC}"
+echo -e "${PINK}This program allows you to perform various tasks on your server and created BY Shuvvan${NC}"
+printf "\n"
+
+# Display server status and IP addresses
+echo -e "${PINK}Server status:${NC}"
+uptime
+echo -e "${RED}IPv4 Address:${NC} $(hostname -I | awk '{print $1}')"
+echo -e "${RED}IPv6 Address:${NC} $(ip -6 addr show | grep 'inet6' | awk '{print $2}' | head -n 1)"
 printf "\n"
 
 # Display options message in a dotted box
@@ -53,17 +60,9 @@ while true; do
     echo -e "${BLUE}3. Disable Firewall${NC}"
     echo -e "${BLUE}4. Install Alireza Panel${NC}"
     echo -e "${BLUE}5. Install Sanaei Panel${NC}"
-    echo -e "${BLUE}6. Check Server Status${NC}"
-    echo -e "${RED}7. Exit${NC}"
+    echo -e "${RED}6. Exit (or press ESC)${NC}"
     printf "\n"
-    read -p "Enter your choice (or press ESC to exit): " -n1 choice
-    echo
-
-    # Exit on ESC key (ASCII code 27)
-    if [[ $choice == $'\e' ]]; then
-        echo -e "${RED}Exiting the program.${NC}"
-        break
-    fi
+    read -p "Enter your choice: " choice
 
     case $choice in
         1)
@@ -89,10 +88,6 @@ while true; do
             bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)
             ;;
         6)
-            echo -e "${PINK}Server status:${NC}"
-            uptime
-            ;;
-        7)
             echo -e "${RED}Exiting the program.${NC}"
             break
             ;;
