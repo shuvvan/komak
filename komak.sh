@@ -17,7 +17,7 @@ print_line() {
 
 # تابع برای نمایش پیام خوش آمدگویی
 welcome_message() {
-    local msg="Welcome 2 the Server Management Program"
+    local msg="Welcome 2 the Server Management App"
     local terminal_width=$(tput cols)
     local len=${#msg}
     local padding=$(( (terminal_width - len) / 2 ))
