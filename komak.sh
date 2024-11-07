@@ -19,18 +19,18 @@ welcome_message() {
 
     printf "\n\n\n"
     printf "%*s" "$padding" ""
-    echo -e "${RED}$(printf '%*s' "$box_width" '' | tr ' ' '#')${NC}"
+    echo -e "${RED}$(printf '%*s' "$box_width" '' | tr ' ' '-')${NC}"
     printf "%*s" "$padding" ""
-    echo -e "${RED}# ${BOLD}${BLUE}${msg} ${RED}#${NC}"
+    echo -e "${RED}- ${BOLD}${BLUE}${msg} ${RED}-${NC}"
     printf "%*s" "$padding" ""
-    echo -e "${RED}$(printf '%*s' "$box_width" '' | tr ' ' '#')${NC}"
+    echo -e "${RED}$(printf '%*s' "$box_width" '' | tr ' ' '-')${NC}"
     printf "\n"
 }
 
 # Display welcome message
 welcome_message
 
-# Display server status in a centered starred box with equal margins
+# Display server status in a centered dashed box with equal margins
 server_status_box() {
     # Gather server information
     local status_msg="Server Status Information"
@@ -57,32 +57,32 @@ server_status_box() {
 
     # Define message length and terminal width
     local msg_length=${#status_msg}
-    local max_length=50  # Fixed box width for better center alignment
+    local max_length=60  # Fixed box width for better center alignment
     local terminal_width=$(tput cols)
     local padding=$(( (terminal_width - max_length) / 2 ))
 
     # Print box border and content
     printf "\n\n\n"
     printf "%*s" "$padding" ""
-    echo -e "${CYAN}$(printf '%*s' "$max_length" '' | tr ' ' '*')${NC}"
+    echo -e "${CYAN}$(printf '%*s' "$max_length" '' | tr ' ' '-')${NC}"
     printf "%*s" "$padding" ""
-    echo -e "${CYAN}* ${BOLD}${GREEN}${status_msg}${NC} ${CYAN}*${NC}"
+    echo -e "${CYAN}- ${BOLD}${GREEN}${status_msg}${NC} ${CYAN}-${NC}"
     printf "%*s" "$padding" ""
-    echo -e "${CYAN}*${NC} ${PINK}Uptime: ${NC}$uptime_info ${CYAN}*${NC}"
+    echo -e "${CYAN}-${NC} ${PINK}Uptime: ${NC}$uptime_info ${CYAN}-${NC}"
     printf "%*s" "$padding" ""
-    echo -e "${CYAN}*${NC} ${RED}IPv4 Address: ${NC}$ipv4 ${CYAN}*${NC}"
+    echo -e "${CYAN}-${NC} ${RED}IPv4 Address: ${NC}$ipv4 ${CYAN}-${NC}"
     printf "%*s" "$padding" ""
-    echo -e "${CYAN}*${NC} ${RED}IPv6 Address: ${NC}$ipv6 ${CYAN}*${NC}"
+    echo -e "${CYAN}-${NC} ${RED}IPv6 Address: ${NC}$ipv6 ${CYAN}-${NC}"
     printf "%*s" "$padding" ""
-    echo -e "${CYAN}*${NC} ${GREEN}CPU: ${NC}${cpu_processes} Processes and ${cpu_usage} usage ${CYAN}*${NC}"
+    echo -e "${CYAN}-${NC} ${GREEN}CPU: ${NC}${cpu_processes} Processes and ${cpu_usage} usage ${CYAN}-${NC}"
     printf "%*s" "$padding" ""
-    echo -e "${CYAN}*${NC} ${GREEN}RAM: ${NC}${ram_total}M total, ${ram_used}M used (${ram_usage_percent}% usage) ${CYAN}*${NC}"
+    echo -e "${CYAN}-${NC} ${GREEN}RAM: ${NC}${ram_total}M total, ${ram_used}M used (${ram_usage_percent}% usage) ${CYAN}-${NC}"
     printf "%*s" "$padding" ""
-    echo -e "${CYAN}*${NC} ${GREEN}Swap: ${NC}${swap_total}M total, ${swap_used}M used (${swap_usage_percent}% usage) ${CYAN}*${NC}"
+    echo -e "${CYAN}-${NC} ${GREEN}Swap: ${NC}${swap_total}M total, ${swap_used}M used (${swap_usage_percent}% usage) ${CYAN}-${NC}"
     printf "%*s" "$padding" ""
-    echo -e "${CYAN}*${NC} ${GREEN}System load:${NC} ${system_load} ${CYAN}*${NC}"
+    echo -e "${CYAN}-${NC} ${GREEN}System load:${NC} ${system_load} ${CYAN}-${NC}"
     printf "%*s" "$padding" ""
-    echo -e "${CYAN}$(printf '%*s' "$max_length" '' | tr ' ' '*')${NC}"
+    echo -e "${CYAN}$(printf '%*s' "$max_length" '' | tr ' ' '-')${NC}"
     printf "\n"
 }
 
