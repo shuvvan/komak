@@ -30,7 +30,7 @@ welcome_message() {
 # Display welcome message
 welcome_message
 
-# Display server status in a centered starred box with border color
+# Display server status in a centered starred box with equal margins and CPU usage text
 server_status_box() {
     # Gather server information
     local status_msg="Server Status Information"
@@ -38,11 +38,9 @@ server_status_box() {
     local ipv4=$(hostname -I | awk '{print $1}')
     local ipv6=$(ip -6 addr show | grep 'inet6' | awk '{print $2}' | head -n 1)
     
-    # CPU Usage information and bar graph
+    # CPU Usage information in plain text (CPU frequency and usage percentage)
+    local cpu_frequency=$(lscpu | grep "CPU MHz:" | awk '{printf "%.1f GHz", $3/1000}')
     local cpu_usage=$(top -bn1 | grep "Cpu(s)" | awk '{print 100 - $8"%"}')
-    local cpu_percent=${cpu_usage/\%/}   # Remove % sign
-    local cpu_bar_length=$((cpu_percent / 5))  # Scale to fit within 20 bars
-    local cpu_bar=$(printf "%-${cpu_bar_length}s" "" | tr ' ' '#')
 
     # Define message length and terminal width
     local msg_length=${#status_msg}
@@ -63,7 +61,7 @@ server_status_box() {
     printf "%*s" "$padding" ""
     echo -e "${CYAN}*${NC} ${RED}IPv6 Address: ${NC}$ipv6 ${CYAN}*${NC}"
     printf "%*s" "$padding" ""
-    echo -e "${CYAN}*${NC} ${GREEN}CPU Usage: ${NC}$cpu_usage [${cpu_bar}${NC}] ${CYAN}*${NC}"
+    echo -e "${CYAN}*${NC} ${GREEN}CPU: ${NC}${cpu_frequency} and ${cpu_usage} usage ${CYAN}*${NC}"
     printf "%*s" "$padding" ""
     echo -e "${CYAN}$(printf '%*s' "$max_length" '' | tr ' ' '*')${NC}"
     printf "\n"
