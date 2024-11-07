@@ -30,7 +30,7 @@ welcome_message() {
 # Display welcome message
 welcome_message
 
-# Display server status in a centered starred box with equal margins and CPU usage text
+# Display server status in a centered starred box with equal margins
 server_status_box() {
     # Gather server information
     local status_msg="Server Status Information"
@@ -38,9 +38,22 @@ server_status_box() {
     local ipv4=$(hostname -I | awk '{print $1}')
     local ipv6=$(ip -6 addr show | grep 'inet6' | awk '{print $2}' | head -n 1)
     
-    # CPU Usage information in plain text (CPU frequency and usage percentage)
-    local cpu_frequency=$(lscpu | grep "CPU MHz:" | awk '{printf "%.1f GHz", $3/1000}')
+    # CPU usage and process count
+    local cpu_processes=$(ps -e | wc -l)
     local cpu_usage=$(top -bn1 | grep "Cpu(s)" | awk '{print 100 - $8"%"}')
+
+    # RAM usage
+    local ram_total=$(free -m | awk '/^Mem:/ {print $2}')
+    local ram_used=$(free -m | awk '/^Mem:/ {print $3}')
+    local ram_usage_percent=$((ram_used * 100 / ram_total))
+
+    # Swap usage
+    local swap_total=$(free -m | awk '/^Swap:/ {print $2}')
+    local swap_used=$(free -m | awk '/^Swap:/ {print $3}')
+    local swap_usage_percent=$((swap_total > 0 ? swap_used * 100 / swap_total : 0))
+
+    # System load
+    local system_load=$(uptime | awk -F'load average:' '{print $2}' | cut -d',' -f1 | xargs)
 
     # Define message length and terminal width
     local msg_length=${#status_msg}
@@ -61,7 +74,13 @@ server_status_box() {
     printf "%*s" "$padding" ""
     echo -e "${CYAN}*${NC} ${RED}IPv6 Address: ${NC}$ipv6 ${CYAN}*${NC}"
     printf "%*s" "$padding" ""
-    echo -e "${CYAN}*${NC} ${GREEN}CPU: ${NC}${cpu_frequency} and ${cpu_usage} usage ${CYAN}*${NC}"
+    echo -e "${CYAN}*${NC} ${GREEN}CPU: ${NC}${cpu_processes} Processes and ${cpu_usage} usage ${CYAN}*${NC}"
+    printf "%*s" "$padding" ""
+    echo -e "${CYAN}*${NC} ${GREEN}RAM: ${NC}${ram_total}M total, ${ram_used}M used (${ram_usage_percent}% usage) ${CYAN}*${NC}"
+    printf "%*s" "$padding" ""
+    echo -e "${CYAN}*${NC} ${GREEN}Swap: ${NC}${swap_total}M total, ${swap_used}M used (${swap_usage_percent}% usage) ${CYAN}*${NC}"
+    printf "%*s" "$padding" ""
+    echo -e "${CYAN}*${NC} ${GREEN}System load:${NC} ${system_load} ${CYAN}*${NC}"
     printf "%*s" "$padding" ""
     echo -e "${CYAN}$(printf '%*s' "$max_length" '' | tr ' ' '*')${NC}"
     printf "\n"
