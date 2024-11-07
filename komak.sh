@@ -124,25 +124,25 @@ while true; do
     case $choice in
         1)
             echo -e "\nUpdating and upgrading the server..."
-            sudo apt update && sudo apt upgrade -y
+            sudo bash -c 'apt update && apt upgrade -y'
             ;;
         2)
             echo -e "\nEnabling the firewall..."
-            sudo ufw enable
+            sudo bash -c 'ufw enable'
             echo "Firewall is now enabled."
             ;;
         3)
             echo -e "\nDisabling the firewall..."
-            sudo ufw disable
+            sudo bash -c 'ufw disable'
             echo "Firewall is now disabled."
             ;;
         4)
             echo -e "\nInstalling Alireza Panel..."
-            bash <(curl -Ls https://raw.githubusercontent.com/alireza0/x-ui/master/install.sh)
+            sudo bash -c 'bash <(curl -Ls https://raw.githubusercontent.com/alireza0/x-ui/master/install.sh)'
             ;;
         5)
             echo -e "\nInstalling Sanaei Panel..."
-            bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)
+            sudo bash -c 'bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)'
             ;;
         6)
             echo -e "\n${RED}Exiting the program.${NC}"
