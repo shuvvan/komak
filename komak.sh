@@ -7,11 +7,29 @@ NC='\033[0m' # بازنشانی رنگ
 # تابع برای نمایش پیام خوش‌آمدگویی
 display_welcome() {
     clear
-    echo -e "${RED}***************************************${NC}"
+    # دریافت عرض و ارتفاع ترمینال
+    width=$(tput cols)
+    height=$(tput lines)
+
+    # تعریف پیام خوش‌آمدگویی و کادر
+    message="خوش آمدید به پروژه Komak"
+    border="***************************************"
+
+    # محاسبه ردیف و ستون شروع برای نمایش در وسط
+    start_row=$((height / 2 - 2))
+    start_col=$(((width - ${#border}) / 2))
+
+    # رفتن به ردیف شروع
+    tput cup $start_row $start_col
+    echo -e "${RED}${border}${NC}"
+    tput cup $((start_row + 1)) $start_col
     echo -e "${RED}*                                     *${NC}"
-    echo -e "${RED}*       خوش آمدید به پروژه Komak      *${NC}"
+    tput cup $((start_row + 2)) $start_col
+    printf "${RED}* %-35s *${NC}\n" "$message"
+    tput cup $((start_row + 3)) $start_col
     echo -e "${RED}*                                     *${NC}"
-    echo -e "${RED}***************************************${NC}"
+    tput cup $((start_row + 4)) $start_col
+    echo -e "${RED}${border}${NC}"
 }
 
 # نمایش پیام خوش‌آمدگویی
