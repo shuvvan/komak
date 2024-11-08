@@ -23,6 +23,7 @@ display_welcome() {
     tput cup 3 $start_col
     echo -e "${RED}*                                     *${NC}"
     tput cup 4 $start_col
+    # محاسبه‌ی شروع برای متن خوش‌آمدگویی به صورت مرکزچین در کادر
     printf "${RED}* %-35s *${NC}\n" "$message"
     tput cup 5 $start_col
     echo -e "${RED}*                                     *${NC}"
