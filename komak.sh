@@ -7,45 +7,43 @@ NC='\033[0m' # بازنشانی رنگ به حالت عادی
 # تابع برای نمایش پیام خوش‌آمدگویی
 display_welcome() {
     clear
-    # دریافت عرض و ارتفاع ترمینال
+    # دریافت عرض ترمینال
     width=$(tput cols)
-    height=$(tput lines)
 
     # تعریف پیام خوش‌آمدگویی و کادر
     message="Welcome to the Komak Project"
     border="***************************************"
 
-    # محاسبه موقعیت شروع برای قرار دادن متن در مرکز
-    start_row=$((height / 2 - 2))
+    # محاسبه ستون شروع برای قرار دادن متن در وسط صفحه افقی
     start_col=$(((width - ${#border}) / 2))
 
-    # نمایش کادر ستاره‌ای و پیام خوش‌آمدگویی
-    tput cup $start_row $start_col
+    # نمایش کادر ستاره‌ای و پیام خوش‌آمدگویی در بالای صفحه
+    tput cup 2 $start_col  # تنظیم مکان برای ردیف سوم از بالا
     echo -e "${RED}${border}${NC}"
-    tput cup $((start_row + 1)) $start_col
+    tput cup 3 $start_col
     echo -e "${RED}*                                     *${NC}"
-    tput cup $((start_row + 2)) $start_col
+    tput cup 4 $start_col
     printf "${RED}* %-35s *${NC}\n" "$message"
-    tput cup $((start_row + 3)) $start_col
+    tput cup 5 $start_col
     echo -e "${RED}*                                     *${NC}"
-    tput cup $((start_row + 4)) $start_col
+    tput cup 6 $start_col
     echo -e "${RED}${border}${NC}"
 }
 
 # نمایش پیام خوش‌آمدگویی
 display_welcome
 
-# حلقه اصلی برای نمایش منو و دریافت ورودی کاربر
+# حلقه اصلی برای انتخاب گزینه‌ها
 while true; do
-    echo -e "\nPlease select an option:"
-    echo "1. Exit"
+    echo -e "\nلطفا یک گزینه انتخاب کنید:"
+    echo "1. خروج"
     read -rsn1 input
 
-    # بررسی اینکه آیا کاربر گزینه خروج یا دکمه ESC را فشار داده است
+    # چک کردن ورودی برای خروج
     if [[ $input == "1" || $input == $'\e' ]]; then
-        echo "Exiting the script..."
+        echo "خروج از اسکریپت"
         break
     else
-        echo "Invalid option, please try again."
+        echo "گزینه نامعتبر است، لطفا مجدداً تلاش کنید."
     fi
 done
