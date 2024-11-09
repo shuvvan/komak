@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 # تابع برای نمایش پیام خوش‌آمدگویی در وسط صفحه با کادر ستاره‌ای و رنگ قرمز
@@ -9,7 +8,7 @@ show_welcome_message() {
   BOLD='\033[1m'   # بولد کردن متن
 
   # پیام خوش‌آمدگویی
-  message="Welcome to Komak 2.8 Project!"
+  message="Welcome to Komak 2.9 Project!"
   term_width=$(tput cols)  # عرض ترمینال برای وسط‌چین کردن
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -19,6 +18,25 @@ show_welcome_message() {
   printf "%*s" "$padding" ""
   echo -e "${RED}* ${BOLD}${message}${RESET} *${RED}"
   echo -e "${RED}$(printf '%*s' "$term_width" | tr ' ' '*')${RESET}"
+}
+
+# تابع برای بررسی وضعیت فایروال
+check_firewall() {
+  sudo ufw status | grep -q "Status: active"
+  if [ $? -eq 0 ]; then
+    echo -e "✅ Firewall is ON"
+  else
+    echo -e "❌ Firewall is OFF"
+  fi
+}
+
+# تابع برای بررسی یوزر روت یا یوزر دیگر
+check_user() {
+  if [ "$(id -u)" -eq 0 ]; then
+    echo -e "Admin (Root User)"
+  else
+    echo -e "$(whoami) (Not Admin) - It is recommended to run the script as root using 'sudo -i'"
+  fi
 }
 
 # تابع برای عملیات آپدیت و آپگریت
@@ -97,6 +115,15 @@ update_upgrade() {
 # نمایش منوی اصلی و گزینه‌ها
 show_menu() {
   show_welcome_message
+
+  # نمایش اطلاعات سیستم قبل از منو
+  echo -e "🌍 IP Address: $(hostname -I | awk '{print $1}')"
+  check_firewall
+  check_user
+
+  # خط جداکننده
+  echo -e "\n$(printf '%*s' "$term_width" | tr ' ' '-')\n"
+  
   echo -e "🖥️  Options:\n"
   echo -e "1) Update and Upgrade Server"
   echo -e "${RED}Press ESC to exit${RESET}\n"
