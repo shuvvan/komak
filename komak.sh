@@ -8,7 +8,7 @@ show_welcome_message() {
   BOLD='\033[1m'   # بولد کردن متن
 
   # پیام خوش‌آمدگویی
-  message="Welcome to Komak Project!"
+  message="Welcome to Komak Pr APP"
   term_width=$(tput cols)  # عرض ترمینال برای وسط‌چین کردن
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -39,7 +39,7 @@ update_upgrade() {
       clear
       echo -e "${BOLD}Operation Canceled${RESET}"
       sleep 2
-      return
+      return  # بازگشت به منوی اصلی
     fi
 
     # محاسبه زمان سپری شده
@@ -59,18 +59,20 @@ update_upgrade() {
   clear
   echo -e "${BOLD}Completed${RESET}"
   sleep 2
+  return  # بازگشت به منوی اصلی
 }
 
-# نمایش پیام خوش‌آمدگویی
-show_welcome_message
+# نمایش منوی اصلی و گزینه‌ها
+show_menu() {
+  show_welcome_message
+  echo -e "\nOptions: ---------------------------"
+  echo -e "1) Update and Upgrade Server"
+  echo -e "Press ESC to exit\n"
+}
 
-# نمایش گزینه‌ها
-echo -e "\nOptions: ---------------------------"
-echo -e "1) Update and Upgrade Server"
-echo -e "Press ESC to exit\n"
-
-# حلقه اصلی برای دریافت ورودی کاربر و انجام عملیات آپدیت و آپگرید
+# حلقه اصلی برای نمایش منو و دریافت ورودی کاربر
 while true; do
+  show_menu
   read -rsn1 input
   case "$input" in
     "1")
@@ -82,6 +84,7 @@ while true; do
       ;;
     *)
       echo -e "Invalid option. Please press 1 or ESC."
+      sleep 1
       ;;
   esac
 done
