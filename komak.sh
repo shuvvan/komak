@@ -1,10 +1,12 @@
 #!/bin/bash
 
-# تابع برای نمایش پیام خوش‌آمدگویی در وسط صفحه با کادر ستاره‌ای و رنگ قرمز
+# تابع برای نمایش پیام خوش‌آمدگویی در وسط صفحه با کادر ستاره‌ای و رنگ قرمز برای کادر و آبی برای پیام
 show_welcome_message() {
   clear
-  # رنگ قرمز
+  # رنگ قرمز برای کادر
   RED='\033[0;31m'
+  # رنگ آبی برای پیام
+  BLUE='\033[0;34m'
   # بازنشانی رنگ‌ها
   RESET='\033[0m'
 
@@ -16,10 +18,10 @@ show_welcome_message() {
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
 
-  # چاپ کادر ستاره‌ای
+  # چاپ کادر ستاره‌ای قرمز
   echo -e "${RED}$(printf '%*s' "$term_width" | tr ' ' '*')${RESET}"
   printf "%*s" "$padding" ""
-  echo -e "${RED}* ${message} *${RESET}"
+  echo -e "${RED}* ${BLUE}${message}${RESET} *"
   echo -e "${RED}$(printf '%*s' "$term_width" | tr ' ' '*')${RESET}"
 }
 
