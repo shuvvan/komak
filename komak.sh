@@ -9,7 +9,7 @@ show_welcome_message() {
   RESET='\033[0m'
 
   # پیام خوش‌آمدگویی
-  message="Welcome to Komak Project!"
+  message="Welcome to Komak Project"
 
   # عرض ترمینال برای وسط‌چین کردن متن
   term_width=$(tput cols)
