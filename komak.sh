@@ -8,7 +8,7 @@ show_welcome_message() {
   BOLD='\033[1m'   # بولد کردن متن
 
   # پیام خوش‌آمدگویی
-  message="Welcome to Komak 2.0 Project!"
+  message="Welcome to Komak 2.1 Project!"
   term_width=$(tput cols)  # عرض ترمینال برای وسط‌چین کردن
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -94,6 +94,7 @@ show_menu() {
   echo -e "1) Update and Upgrade Server"
   echo -e "${RED}Press ESC to exit${RESET}\n"
 }
+
 # حلقه اصلی برای نمایش منو و دریافت ورودی کاربر
 while true; do
   echo -e "\033[0m"  # بازنشانی تنظیمات رنگ
@@ -113,7 +114,6 @@ while true; do
       tput cup $(( (term_height / 2) + 2 )) $(( (term_width - 50) / 2 ))
       echo -e "${WHITE}Developed by Shwan in cooperation with Ehsan${RESET}"
       sleep 5
-      clear  # پاک کردن صفحه پس از نمایش پیام خروج
       exit 0
       ;;
     *)
