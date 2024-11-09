@@ -9,7 +9,7 @@ show_welcome_message() {
   RESET='\033[0m'
 
   # پیام خوش‌آمدگویی
-  message="Welcome to Komak Project"
+  message="Welcome to Komak Project!"
 
   # عرض ترمینال برای وسط‌چین کردن متن
   term_width=$(tput cols)
@@ -42,7 +42,9 @@ while true; do
   read -rsn1 input
 
   # بررسی ورودی برای عدد 1 یا ESC
-  if [[ $input == "1" || $input == $'\e' ]]; then
+  if [[ "$input" == "1" || "$input" == $'\e' ]]; then
     exit_script
   fi
+  # جلوگیری از هر ورودی دیگر (مثل کلیدهای جهت، Delete و غیره)
+  # از تداخل کلیدهای خاص جلوگیری می‌کند
 done
