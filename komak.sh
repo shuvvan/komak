@@ -18,7 +18,7 @@ show_welcome_message() {
 
   # چاپ کادر ستاره‌ای
   printf "${RED}%${term_width}s${RESET}\n" | tr ' ' '*'
-  printf "%*s%s%*s\n" $padding "" "$RED$message$RESET" $padding ""
+  printf "%*s%s%*s\n" $padding "" "${RED}${message}${RESET}" $padding ""
   printf "${RED}%${term_width}s${RESET}\n" | tr ' ' '*'
 }
 
