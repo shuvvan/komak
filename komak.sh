@@ -9,7 +9,7 @@ show_welcome_message() {
   BOLD='\033[1m'   # بولد کردن متن
 
   # پیام خوش‌آمدگویی
-  message="Welcome to Komak 2.9.2 Project!"
+  message="Welcome to Komak 2.9.3 Project!"
   term_width=$(tput cols)  # عرض ترمینال برای وسط‌چین کردن
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -117,6 +117,9 @@ update_upgrade() {
 show_menu() {
   show_welcome_message
 
+  # اضافه کردن یک خط فاصله از بالای صفحه برای اطلاعات سیستم
+  echo -e "\n"  # یک سطر فاصله از بالای صفحه
+
   # نمایش اطلاعات سیستم قبل از منو
   IP_ADDRESS=$(hostname -I | awk '{print $1}')
   FIREWALL_STATUS=$(sudo ufw status | grep -q "Status: active" && echo "✅ ON" || echo "❌ OFF")
@@ -134,6 +137,7 @@ show_menu() {
   echo -e "1) Update and Upgrade Server"
   echo -e "${RED}Press ESC to exit${RESET}\n"
 }
+
 
 # حلقه اصلی برای نمایش منو و دریافت ورودی کاربر
 while true; do
