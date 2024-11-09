@@ -8,7 +8,7 @@ show_welcome_message() {
   BOLD='\033[1m'   # بولد کردن متن
 
   # پیام خوش‌آمدگویی
-  message="Welcome to help Project!"
+  message="Welcome to Komaak Project!"
   term_width=$(tput cols)  # عرض ترمینال برای وسط‌چین کردن
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -68,7 +68,7 @@ show_menu() {
   # بازنشانی تنظیمات و اطمینان از چپ‌چین بودن متن
   echo -e "\033[0m\nOptions: ---------------------------"
   echo -e "1) Update and Upgrade Server"
-  echo -e "Press ESC to exit\n"
+  echo -e "${RED}Press ESC to exit${RESET}\n"
 }
 
 # حلقه اصلی برای نمایش منو و دریافت ورودی کاربر
