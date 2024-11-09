@@ -8,7 +8,7 @@ show_welcome_message() {
   BOLD='\033[1m'   # بولد کردن متن
 
   # پیام خوش‌آمدگویی
-  message="Welcome to Komak 2.4 Project!"
+  message="Welcome to Komak 2.5 Project!"
   term_width=$(tput cols)  # عرض ترمینال برای وسط‌چین کردن
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -20,21 +20,35 @@ show_welcome_message() {
   echo -e "${RED}$(printf '%*s' "$term_width" | tr ' ' '*')${RESET}"
 }
 
+# تابع برای دریافت وضعیت فایروال
+get_firewall_status() {
+  if sudo ufw status | grep -q "Status: active"; then
+    echo -e "✔️ ${GREEN}Enabled${RESET}"
+  else
+    echo -e "❌ ${RED}Disabled${RESET}"
+  fi
+}
+
 # تابع برای عملیات آپدیت و آپگریت
 update_upgrade() {
   clear
 
   # دریافت اطلاعات سیستم به صورت درصد
   IP_ADDRESS=$(hostname -I | awk '{print $1}')
-  UBUNTU_VERSION=$(lsb_release -d | awk -F'\t' '{print $2}')
+  IPV6_ADDRESS=$(hostname -I | awk '{print $2}')
   CPU_USAGE=$(top -bn1 | grep "Cpu(s)" | awk '{print 100 - $8"%"}')
   RAM_USAGE=$(free | awk '/Mem/{printf("%.2f%"), $3/$2 * 100}')
   SWAP_USAGE=$(free | awk '/Swap/{printf("%.2f%"), $3/$2 * 100}')
   DISK_USAGE=$(df -h / | awk 'NR==2 {print $5}')
+  DISK_SIZE=$(df -h / | awk 'NR==2 {print $2}')
+  FIREWALL_STATUS=$(get_firewall_status)
 
+  # طراحی جدول
   ORANGE='\033[0;33m' # رنگ نارنجی
   LIGHT_BLUE='\033[1;34m' # رنگ آبی روشن
   WHITE='\033[1;37m' # رنگ سفید
+  GREEN='\033[0;32m' # رنگ سبز
+  RED='\033[0;31m'   # رنگ قرمز
 
   # محاسبه عرض و موقعیت عمودی صفحه برای وسط‌چین کردن
   term_width=$(tput cols)
@@ -46,19 +60,18 @@ update_upgrade() {
   tput cup $middle_row $(( (term_width - 45) / 2 ))
   echo -e "${BOLD}Please wait for update and upgrade your server...${RESET}"
 
-  # اطلاعات سیستم در زیر پیام آپدیت نمایش داده می‌شوند
-  tput cup $((middle_row + 2)) $(( (term_width - 30) / 2 ))
-  echo -e "🌍 ${ORANGE}Server IP: $IP_ADDRESS${RESET}"
-  tput cup $((middle_row + 3)) $(( (term_width - 30) / 2 ))
-  echo -e "🔖 ${RED}Ubuntu Version: $UBUNTU_VERSION${RESET}"
-  tput cup $((middle_row + 4)) $(( (term_width - 30) / 2 ))
-  echo -e "💻 ${RED}CPU Usage: $CPU_USAGE${RESET}"
-  tput cup $((middle_row + 5)) $(( (term_width - 30) / 2 ))
-  echo -e "💾 ${RED}RAM Usage: $RAM_USAGE${RESET}"
-  tput cup $((middle_row + 6)) $(( (term_width - 30) / 2 ))
-  echo -e "🔄 ${RED}SWAP Usage: $SWAP_USAGE${RESET}"
-  tput cup $((middle_row + 7)) $(( (term_width - 30) / 2 ))
-  echo -e "🖴 ${RED}Disk Usage: $DISK_USAGE${RESET}"
+  # چاپ جدول اطلاعات سیستم
+  tput cup $((middle_row + 2)) 0
+  echo -e "${BOLD}System Information:${RESET}"
+  echo -e "--------------------------------------------------"
+  printf "| %-25s | %-25s |\n" "IP Address" "$IP_ADDRESS"
+  printf "| %-25s | %-25s |\n" "IPv6 Address" "$IPV6_ADDRESS"
+  printf "| %-25s | %-25s |\n" "Firewall Status" "$FIREWALL_STATUS"
+  printf "| %-25s | %-25s |\n" "CPU Usage" "$CPU_USAGE"
+  printf "| %-25s | %-25s |\n" "RAM Usage" "$RAM_USAGE"
+  printf "| %-25s | %-25s |\n" "Disk Size" "$DISK_SIZE"
+  printf "| %-25s | %-25s |\n" "Disk Usage" "$DISK_USAGE"
+  echo -e "--------------------------------------------------"
 
   # کپی‌رایت در پایین صفحه
   tput cup $((term_height - 1)) $(( (term_width - 35) / 2 ))
