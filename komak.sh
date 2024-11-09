@@ -1,51 +1,42 @@
 #!/bin/bash
 
-# تنظیم رنگ قرمز
-RED='\033[0;31m'
-NC='\033[0m' # بازنشانی رنگ به حالت عادی
+# تابع برای نمایش پیام خوش‌آمدگویی در وسط صفحه با کادر ستاره‌ای و رنگ قرمز
+show_welcome_message() {
+  clear
+  # رنگ قرمز
+  RED='\033[0;31m'
+  # بازنشانی رنگ‌ها
+  RESET='\033[0m'
 
-# تابع برای نمایش پیام خوش‌آمدگویی
-display_welcome() {
-    clear
-    # دریافت عرض و ارتفاع ترمینال
-    width=$(tput cols)
-    height=$(tput lines)
+  # پیام خوش‌آمدگویی
+  message="Welcome to Komak Project!"
 
-    # تعریف پیام خوش‌آمدگویی و کادر
-    message="Welcome to the Komak Project"
-    border="***************************************"
+  # عرض ترمینال برای وسط‌چین کردن متن
+  term_width=$(tput cols)
+  message_width=${#message}
+  padding=$(( (term_width - message_width) / 2 ))
 
-    # محاسبه موقعیت شروع برای قرار دادن متن در مرکز
-    start_row=$((height / 2 - 2))
-    start_col=$(((width - ${#border}) / 2))
+  # چاپ کادر ستاره‌ای
+  printf "${RED}%${term_width}s${RESET}\n" | tr ' ' '*'
+  printf "%*s%s%*s\n" $padding "" "$RED$message$RESET" $padding ""
+  printf "${RED}%${term_width}s${RESET}\n" | tr ' ' '*'
+}
 
-    # نمایش کادر ستاره‌ای و پیام خوش‌آمدگویی
-    tput cup $start_row $start_col
-    echo -e "${RED}${border}${NC}"
-    tput cup $((start_row + 1)) $start_col
-    echo -e "${RED}*                                     *${NC}"
-    tput cup $((start_row + 2)) $start_col
-    printf "${RED}* %-35s *${NC}\n" "$message"
-    tput cup $((start_row + 3)) $start_col
-    echo -e "${RED}*                                     *${NC}"
-    tput cup $((start_row + 4)) $start_col
-    echo -e "${RED}${border}${NC}"
+# تابع خروج
+exit_script() {
+  clear
+  echo "Exiting..."
+  exit 0
 }
 
 # نمایش پیام خوش‌آمدگویی
-display_welcome
+show_welcome_message
 
-# حلقه اصلی برای نمایش منو و دریافت ورودی کاربر
-while true; do
-    echo -e "\nPlease select an option:"
-    echo "1. Exit"
-    read -rsn1 input
+# گزینه‌های انتخابی
+echo -e "\n${RED}1. Exit (or press ESC)${RESET}"
 
-    # بررسی اینکه آیا کاربر گزینه خروج یا دکمه ESC را فشار داده است
-    if [[ $input == "1" || $input == $'\e' ]]; then
-        echo "Exiting the script..."
-        break
-    else
-        echo "Invalid option, please try again."
-    fi
-done
+# خواندن ورودی کاربر
+read -rsn1 input
+if [[ $input == "1" || $input == $'\e' ]]; then
+  exit_script
+fi
