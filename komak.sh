@@ -90,7 +90,7 @@ display_system_info_table() {
 # تابع برای نمایش منوی اصلی و گزینه‌ها
 show_menu() {
   display_system_info_table  # نمایش جدول اطلاعات سیستم
-  echo -e "\n🖥️  Options:\n"
+  echo -e "\n🖥️  Optionsss:\n"
   echo -e "1) Update and Upgrade Server"
   echo -e "${RED}Press ESC to exit${RESET}\n"
 }
