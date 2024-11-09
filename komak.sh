@@ -8,7 +8,7 @@ show_welcome_message() {
   BOLD='\033[1m'   # بولد کردن متن
 
   # پیام خوش‌آمدگویی
-  message="Welcome to Komak 2.5.1 Project!"
+  message="Welcome to Komak 2.5.2 Project!"
   term_width=$(tput cols)  # عرض ترمینال برای وسط‌چین کردن
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -29,11 +29,8 @@ get_firewall_status() {
   fi
 }
 
-# تابع برای عملیات آپدیت و آپگریت
-update_upgrade() {
-  clear
-
-  # دریافت اطلاعات سیستم به صورت درصد
+# تابع برای دریافت اطلاعات سیستم
+get_system_info() {
   IP_ADDRESS=$(hostname -I | awk '{print $1}')
   IPV6_ADDRESS=$(hostname -I | awk '{print $2}')
   CPU_USAGE=$(top -bn1 | grep "Cpu(s)" | awk '{print 100 - $8"%"}')
@@ -42,28 +39,28 @@ update_upgrade() {
   DISK_USAGE=$(df -h / | awk 'NR==2 {print $5}')
   DISK_SIZE=$(df -h / | awk 'NR==2 {print $2}')
   FIREWALL_STATUS=$(get_firewall_status)
+}
 
-  # طراحی جدول
-  ORANGE='\033[0;33m' # رنگ نارنجی
+# تابع برای نمایش جدول اطلاعات سیستم
+display_system_info_table() {
+  get_system_info
+  
+  # تنظیمات رنگ‌ها
   LIGHT_BLUE='\033[1;34m' # رنگ آبی روشن
-  WHITE='\033[1;37m' # رنگ سفید
   GREEN='\033[0;32m' # رنگ سبز
   RED='\033[0;31m'   # رنگ قرمز
+  ORANGE='\033[0;33m' # رنگ نارنجی
+  WHITE='\033[1;37m' # رنگ سفید
 
-  # محاسبه عرض و موقعیت عمودی صفحه برای وسط‌چین کردن
-  term_width=$(tput cols)
-  term_height=$(tput lines)
-  middle_row=$(( term_height / 2 - 5 ))
+  term_width=$(tput cols)  # عرض ترمینال
+  term_height=$(tput lines)  # ارتفاع ترمینال
+  
+  middle_row=$((term_height / 2 - 5))
 
-  # پیام آپدیت در وسط صفحه
-  clear
-  tput cup $middle_row $(( (term_width - 45) / 2 ))
-  echo -e "${BOLD}Please wait for update and upgrade your server...${RESET}"
-
-  # چاپ جدول اطلاعات سیستم
-  tput cup $((middle_row + 2)) 0
+  # نمایش جدول اطلاعات سیستم در وسط صفحه
+  tput cup $middle_row 0  # تنظیم موقعیت برای چاپ در وسط صفحه
   echo -e "${BOLD}System Information:${RESET}"
-  echo -e "--------------------------------------------------"
+  echo -e "------------------------------------------------------------"
   printf "| %-25s | %-25s |\n" "IP Address" "$IP_ADDRESS"
   printf "| %-25s | %-25s |\n" "IPv6 Address" "$IPV6_ADDRESS"
   printf "| %-25s | %-25s |\n" "Firewall Status" "$FIREWALL_STATUS"
@@ -71,45 +68,13 @@ update_upgrade() {
   printf "| %-25s | %-25s |\n" "RAM Usage" "$RAM_USAGE"
   printf "| %-25s | %-25s |\n" "Disk Size" "$DISK_SIZE"
   printf "| %-25s | %-25s |\n" "Disk Usage" "$DISK_USAGE"
-  echo -e "--------------------------------------------------"
-
-  # کپی‌رایت در پایین صفحه
-  tput cup $((term_height - 1)) $(( (term_width - 35) / 2 ))
-  echo -e "${WHITE}Designed and developed by Shuvvan${RESET}"
-
-  # اجرای آپدیت و آپگرید در پس‌زمینه
-  (sudo apt update && sudo apt upgrade -y) &> /dev/null &
-  pid=$! # ذخیره PID فرآیند
-
-  # بررسی برای کلید ESC برای لغو عملیات
-  while kill -0 $pid 2> /dev/null; do
-    read -rsn1 -t 1 input
-    if [[ "$input" == $'\e' ]]; then
-      kill $pid 2> /dev/null  # خاتمه فرآیند
-      clear
-      tput cup $middle_row $(( (term_width - 60) / 2 ))
-      echo -e "${RED}Unfortunately, the update operation of your server was canceled 😞${RESET}"
-      tput cup $((term_height - 1)) $(( (term_width - 35) / 2 ))
-      echo -e "${WHITE}Designed and developed by Shuvvan${RESET}"
-      sleep 4
-      return  # بازگشت به منوی اصلی
-    fi
-  done
-  
-  # نمایش پیام تکمیل عملیات
-  clear
-  tput cup $middle_row $(( (term_width - 60) / 2 ))
-  echo -e "${LIGHT_BLUE}The operation is complete! Thank you for waiting 😊${RESET}"
-  tput cup $((term_height - 1)) $(( (term_width - 35) / 2 ))
-  echo -e "${WHITE}Designed and developed by Shuvvan${RESET}"
-  sleep 5
-  return  # بازگشت به منوی اصلی
+  echo -e "------------------------------------------------------------"
 }
 
-# نمایش منوی اصلی و گزینه‌ها
+# تابع برای نمایش منوی اصلی و گزینه‌ها
 show_menu() {
-  show_welcome_message
-  echo -e "🖥️  Options:\n"
+  display_system_info_table  # نمایش جدول اطلاعات سیستم
+  echo -e "\n🖥️  Options:\n"
   echo -e "1) Update and Upgrade Server"
   echo -e "${RED}Press ESC to exit${RESET}\n"
 }
