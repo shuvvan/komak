@@ -8,7 +8,7 @@ show_welcome_message() {
   BOLD='\033[1m'   # بولد کردن متن
 
   # پیام خوش‌آمدگویی
-  message="Welcome to Komak 2.7.2 Project!"
+  message="Welcome to Komak 2.7.3 Project!"
   term_width=$(tput cols)  # عرض ترمینال برای وسط‌چین کردن
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -55,7 +55,10 @@ show_system_info() {
 # تابع برای عملیات آپدیت و آپگریت
 update_upgrade() {
   clear
-  # کد این بخش همانند قبل
+  echo "Updating and upgrading the server..."
+  sudo apt update && sudo apt upgrade -y
+  echo "Server update and upgrade completed!"
+  sleep 2
 }
 
 # نمایش منوی اصلی و گزینه‌ها
@@ -79,6 +82,8 @@ while true; do
   echo -e "\033[0m"  # بازنشانی تنظیمات رنگ
   show_menu
   read -rsn1 input
+
+  # بررسی ورودی کاربر
   case "$input" in
     "1")
       update_upgrade
