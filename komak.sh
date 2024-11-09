@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# تنظیم پس‌زمینه به سیاه و متن به سفید
-tput setab 0  # Black background
-tput setaf 7  # White text
-clear
 
 # تابع برای نمایش اینترولوگو در وسط صفحه با سایز 30 و bold
 show_intro_logo() {
@@ -11,7 +7,7 @@ show_intro_logo() {
   RESET='\033[0m'
   BOLD='\033[1m'
   
-  logo="KOMAK 3.5.6"
+  logo="KOMAK 3.5.7"
   term_width=$(tput cols)
   term_height=$(tput lines)
   logo_width=${#logo}
@@ -34,14 +30,14 @@ show_welcome_message() {
   RESET='\033[0m'
   BOLD='\033[1m'
 
-  message="Welcome to Komak 3.5.6 Project!"
+  message="Welcome to Komak 3.5.7 Project!"
   term_width=$(tput cols)
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
 
   echo -e "${RED}$(printf '%*s' "$term_width" | tr ' ' '*')${RESET}"
   printf "%*s" "$padding" ""
-  echo -e "${RED}* ${BOLD}${message}${RESET} *${RED}"
+  echo -e "* ${BOLD}${message}${RESET} *${RED}"
   echo -e "${RED}$(printf '%*s' "$term_width" | tr ' ' '*')${RESET}"
 }
 
@@ -99,7 +95,7 @@ update_upgrade() {
   echo -e "🖴 ${RED}Disk Usage: $DISK_USAGE${RESET}"
 
   tput cup $((term_height - 1)) $(( (term_width - 35) / 2 ))
-  echo -e "${WHITE}Designed and developed by Shuvvan${RESET}"
+  echo -e "Designed and developed by Shuvvan${RESET}"
 
   (sudo apt update && sudo apt upgrade -y) &> /dev/null &
   pid=$!
@@ -112,8 +108,8 @@ update_upgrade() {
       tput cup $middle_row $(( (term_width - 60) / 2 ))
       echo -e "${RED}Unfortunately, the update operation of your server was canceled 😞${RESET}"
       tput cup $((term_height - 1)) $(( (term_width - 35) / 2 ))
-      echo -e "${WHITE}Designed and developed by Shuvvan${RESET}"
-      sleep 4
+      echo -e "Designed and developed by Shuvvan${RESET}"
+      sleep 3
       return
     fi
   done
@@ -140,7 +136,7 @@ show_menu() {
 
   term_width=$(tput cols)
   printf "%*s" $(( (term_width - 100) / 2 )) ""
-  echo -e "${YELLOW}* IP Address: $IP_ADDRESS  |  Firewall: $FIREWALL_STATUS  |  User: $USER_STATUS  |  System Load: $SYSTEM_LOAD *${RESET}"
+  echo -e "${YELLOW}*🌍 IP Address: $IP_ADDRESS  | 💻 Firewall: $FIREWALL_STATUS  | 🧑‍💼 User: $USER_STATUS  | ⏰ System Load: $SYSTEM_LOAD *${RESET}"
 
   echo -e "\n$(printf '%*s' "$term_width" | tr ' ' '-')\n"
   
