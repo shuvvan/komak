@@ -66,7 +66,7 @@ update_upgrade() {
 show_menu() {
   show_welcome_message
   # بازنشانی تنظیمات و اطمینان از چپ‌چین بودن متن
-  echo -e "\033[0m\n📺 Options"
+  echo -e "\033[0m\n📺 Options\n"
   echo -e "1) Update and Upgrade Server"
   echo -e "${RED}Press ESC to exit${RESET}\n"
 }
