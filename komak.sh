@@ -9,7 +9,7 @@ show_welcome_message() {
   BOLD='\033[1m'   # بولد کردن متن
 
   # پیام خوش‌آمدگویی
-  message="Welcome to Komak 3.0.1 Project!"
+  message="Welcome to Komak 3.0.2 Project!"
   term_width=$(tput cols)  # عرض ترمینال برای وسط‌چین کردن
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -19,26 +19,8 @@ show_welcome_message() {
   printf "%*s" "$padding" ""
   echo -e "${RED}* ${BOLD}${message}${RESET} *${RED}"
   echo -e "${RED}$(printf '%*s' "$term_width" | tr ' ' '*')${RESET}"
-}
 
-# تابع برای نمایش پیام معرفی Komak 3.0
-show_intro_message() {
-  clear
-  LIGHT_BLUE='\033[1;34m' # رنگ آبی روشن
-  BOLD='\033[1m'          # بولد کردن متن
-  RESET='\033[0m'         # بازنشانی رنگ‌ها
-
-  # پیام معرفی Komak 3.0
-  intro_message="KOMAK 3.0"
-  term_width=$(tput cols)  # عرض ترمینال برای وسط‌چین کردن
-  intro_message_width=${#intro_message}
-  padding=$(( (term_width - intro_message_width) / 2 ))
-
-  # چاپ پیام در وسط صفحه با رنگ آبی روشن و بولد
-  tput cup $(( $(tput lines) / 2 - 1 )) $padding
-  echo -e "${LIGHT_BLUE}${BOLD}${intro_message}${RESET}"
-
-  # صبر کردن به مدت 3 ثانیه
+  # تاخیر 3 ثانیه‌ای برای نمایش پیام
   sleep 3
 }
 
@@ -136,8 +118,6 @@ update_upgrade() {
 
 # نمایش منوی اصلی و گزینه‌ها
 show_menu() {
-  show_intro_message  # نمایش پیام معرفی
-
   show_welcome_message
 
   # اضافه کردن یک خط فاصله از بالای صفحه برای اطلاعات سیستم
@@ -166,13 +146,28 @@ show_menu() {
 while true; do
   echo -e "\033[0m"  # بازنشانی تنظیمات رنگ
   show_menu
-  read -p "Enter your choice: " choice
-  case $choice in
-    1)
+  read -rsn1 input
+  case "$input" in
+    "1")
       update_upgrade
       ;;
-    *)
-      echo -e "\033[0;31mInvalid option. Please try again.\033[0m"
+    $'\e')
+      clear
+      # عرض و ارتفاع ترمینال برای تنظیم وسط‌چین کردن
+      term_width=$(tput cols)
+      term_height=$(tput lines)
+
+      # پیام خروج در وسط صفحه
+      tput cup $(( term_height / 2 - 2 )) $(( (term_width - 50) / 2 ))
+      echo -e "${WHITE}Thank you for choosing and using komak 🥰${RESET}"
+      tput cup $(( term_height / 2 )) $(( (term_width - 50) / 2 ))
+      echo -e "${WHITE}Hope to see you again soon${RESET}"
+      tput cup $(( term_height / 2 + 2 )) $(( (term_width - 50) / 2 ))
+      echo -e "${WHITE}Developed by Shwan in cooperation with Ehsan${RESET}"
+      
+      sleep 5
+      clear  # پاکسازی صفحه
+      exit 0  # پایان اجرای اسکریپت
       ;;
   esac
 done
