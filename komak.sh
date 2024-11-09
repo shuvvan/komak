@@ -8,7 +8,7 @@ show_welcome_message() {
   BOLD='\033[1m'   # بولد کردن متن
 
   # پیام خوش‌آمدگویی
-  message="Welcome to Komak 2.7 Project!"
+  message="Welcome to Komak 2.7.2 Project!"
   term_width=$(tput cols)  # عرض ترمینال برای وسط‌چین کردن
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -47,6 +47,9 @@ show_system_info() {
   
   # نمایش اطلاعات سیستم
   echo -e "\033[1;34m$INFO_ROW\033[0m"
+
+  # کشیدن خط چین زیر اطلاعات سیستم
+  printf '%*s\n' "$term_width" | tr ' ' '-'
 }
 
 # تابع برای عملیات آپدیت و آپگریت
@@ -61,6 +64,9 @@ show_menu() {
 
   # نمایش اطلاعات سیستم قبل از گزینه‌ها
   show_system_info
+
+  # ایجاد فاصله از پایین خط برای نمایش گزینه‌ها
+  echo -e "\n\n"
 
   # نمایش گزینه‌ها
   echo -e "🖥️  Options:\n"
