@@ -8,7 +8,7 @@ show_welcome_message() {
   BOLD='\033[1m'   # بولد کردن متن
 
   # پیام خوش‌آمدگویی
-  message="Welcome to Komak 2.3.2 Project!"
+  message="Welcome to Komak 2.4 Project!"
   term_width=$(tput cols)  # عرض ترمینال برای وسط‌چین کردن
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -24,12 +24,14 @@ show_welcome_message() {
 update_upgrade() {
   clear
 
-  # دریافت اطلاعات سیستم
+  # دریافت اطلاعات سیستم به صورت درصد
   IP_ADDRESS=$(hostname -I | awk '{print $1}')
   UBUNTU_VERSION=$(lsb_release -d | awk -F'\t' '{print $2}')
-  CPU_INFO=$(grep -m 1 'model name' /proc/cpuinfo | awk -F': ' '{print $2}')
-  RAM_TOTAL=$(free -m | awk '/Mem:/ {print $2}')
-  
+  CPU_USAGE=$(top -bn1 | grep "Cpu(s)" | awk '{print 100 - $8"%"}')
+  RAM_USAGE=$(free | awk '/Mem/{printf("%.2f%"), $3/$2 * 100}')
+  SWAP_USAGE=$(free | awk '/Swap/{printf("%.2f%"), $3/$2 * 100}')
+  DISK_USAGE=$(df -h / | awk 'NR==2 {print $5}')
+
   ORANGE='\033[0;33m' # رنگ نارنجی
   LIGHT_BLUE='\033[1;34m' # رنگ آبی روشن
   WHITE='\033[1;37m' # رنگ سفید
@@ -50,9 +52,13 @@ update_upgrade() {
   tput cup $((middle_row + 3)) $(( (term_width - 30) / 2 ))
   echo -e "🔖 ${RED}Ubuntu Version: $UBUNTU_VERSION${RESET}"
   tput cup $((middle_row + 4)) $(( (term_width - 30) / 2 ))
-  echo -e "💻 ${RED}CPU: $CPU_INFO${RESET}"
+  echo -e "💻 ${RED}CPU Usage: $CPU_USAGE${RESET}"
   tput cup $((middle_row + 5)) $(( (term_width - 30) / 2 ))
-  echo -e "💾 ${RED}Total RAM: ${RAM_TOTAL} MB${RESET}"
+  echo -e "💾 ${RED}RAM Usage: $RAM_USAGE${RESET}"
+  tput cup $((middle_row + 6)) $(( (term_width - 30) / 2 ))
+  echo -e "🔄 ${RED}SWAP Usage: $SWAP_USAGE${RESET}"
+  tput cup $((middle_row + 7)) $(( (term_width - 30) / 2 ))
+  echo -e "🖴 ${RED}Disk Usage: $DISK_USAGE${RESET}"
 
   # کپی‌رایت در پایین صفحه
   tput cup $((term_height - 1)) $(( (term_width - 35) / 2 ))
@@ -128,4 +134,3 @@ while true; do
       ;;
   esac
 done
-
