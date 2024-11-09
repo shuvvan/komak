@@ -36,8 +36,13 @@ show_welcome_message
 # گزینه‌های انتخابی
 echo -e "\n${RED}1. Exit (or press ESC)${RESET}"
 
-# خواندن ورودی کاربر
-read -rsn1 input
-if [[ $input == "1" || $input == $'\e' ]]; then
-  exit_script
-fi
+# حلقه برای دریافت ورودی معتبر
+while true; do
+  # خواندن ورودی کاربر
+  read -rsn1 input
+  if [[ $input == "1" || $input == $'\e' ]]; then
+    exit_script
+  else
+    echo -e "\nInvalid input. Press '1' to exit or ESC."
+  fi
+done
