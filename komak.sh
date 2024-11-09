@@ -1,20 +1,37 @@
 #!/bin/bash
 
+# تابع برای نمایش اینترولوگو در وسط صفحه
+show_intro_logo() {
+  clear
+  RED='\033[0;31m'
+  RESET='\033[0m'
+  BOLD='\033[1m'
+  
+  logo="KOMAK 3.2"
+  term_width=$(tput cols)
+  logo_width=${#logo}
+  padding=$(( (term_width - logo_width) / 2 ))
+
+  echo -e "\n\n\n"
+  printf "%*s" "$padding" ""
+  echo -e "${RED}${BOLD}${logo}${RESET}"
+  echo -e "\n\n\n"
+  sleep 2
+}
+
 # تابع برای نمایش پیام خوش‌آمدگویی در وسط صفحه با کادر ستاره‌ای و رنگ قرمز
 show_welcome_message() {
   clear
-  RED='\033[0;31m' # رنگ قرمز
-  YELLOW='\033[0;33m' # رنگ زرد
-  RESET='\033[0m'  # بازنشانی رنگ‌ها
-  BOLD='\033[1m'   # بولد کردن متن
+  RED='\033[0;31m'
+  YELLOW='\033[0;33m'
+  RESET='\033[0m'
+  BOLD='\033[1m'
 
-  # پیام خوش‌آمدگویی
-  message="Welcome to Komak 3.1 Project!"
-  term_width=$(tput cols)  # عرض ترمینال برای وسط‌چین کردن
+  message="Welcome to Komak 3.2 Project!"
+  term_width=$(tput cols)
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
 
-  # چاپ کادر ستاره‌ای
   echo -e "${RED}$(printf '%*s' "$term_width" | tr ' ' '*')${RESET}"
   printf "%*s" "$padding" ""
   echo -e "${RED}* ${BOLD}${message}${RESET} *${RED}"
@@ -43,8 +60,6 @@ check_user() {
 # تابع برای عملیات آپدیت و آپگریت
 update_upgrade() {
   clear
-
-  # دریافت اطلاعات سیستم به صورت درصد
   IP_ADDRESS=$(hostname -I | awk '{print $1}')
   UBUNTU_VERSION=$(lsb_release -d | awk -F'\t' '{print $2}')
   CPU_USAGE=$(top -bn1 | grep "Cpu(s)" | awk '{print 100 - $8"%"}')
@@ -52,21 +67,17 @@ update_upgrade() {
   SWAP_USAGE=$(free | awk '/Swap/{printf("%.2f%"), $3/$2 * 100}')
   DISK_USAGE=$(df -h / | awk 'NR==2 {print $5}')
 
-  ORANGE='\033[0;33m' # رنگ نارنجی
-  LIGHT_BLUE='\033[1;34m' # رنگ آبی روشن
-  WHITE='\033[1;37m' # رنگ سفید
-
-  # محاسبه عرض و موقعیت عمودی صفحه برای وسط‌چین کردن
+  ORANGE='\033[0;33m'
+  LIGHT_BLUE='\033[1;34m'
+  WHITE='\033[1;37m'
   term_width=$(tput cols)
   term_height=$(tput lines)
   middle_row=$(( term_height / 2 - 5 ))
 
-  # پیام آپدیت در وسط صفحه
   clear
   tput cup $middle_row $(( (term_width - 45) / 2 ))
   echo -e "${BOLD}Please wait for update and upgrade your server...${RESET}"
 
-  # اطلاعات سیستم در زیر پیام آپدیت نمایش داده می‌شوند
   tput cup $((middle_row + 2)) $(( (term_width - 30) / 2 ))
   echo -e "🌍 ${ORANGE}Server IP: $IP_ADDRESS${RESET}"
   tput cup $((middle_row + 3)) $(( (term_width - 30) / 2 ))
@@ -80,58 +91,50 @@ update_upgrade() {
   tput cup $((middle_row + 7)) $(( (term_width - 30) / 2 ))
   echo -e "🖴 ${RED}Disk Usage: $DISK_USAGE${RESET}"
 
-  # کپی‌رایت در پایین صفحه
   tput cup $((term_height - 1)) $(( (term_width - 35) / 2 ))
   echo -e "${WHITE}Designed and developed by Shuvvan${RESET}"
 
-  # اجرای آپدیت و آپگرید در پس‌زمینه
   (sudo apt update && sudo apt upgrade -y) &> /dev/null &
-  pid=$! # ذخیره PID فرآیند
+  pid=$!
 
-  # بررسی برای کلید ESC برای لغو عملیات
   while kill -0 $pid 2> /dev/null; do
     read -rsn1 -t 1 input
     if [[ "$input" == $'\e' ]]; then
-      kill $pid 2> /dev/null  # خاتمه فرآیند
+      kill $pid 2> /dev/null
       clear
       tput cup $middle_row $(( (term_width - 60) / 2 ))
       echo -e "${RED}Unfortunately, the update operation of your server was canceled 😞${RESET}"
       tput cup $((term_height - 1)) $(( (term_width - 35) / 2 ))
       echo -e "${WHITE}Designed and developed by Shuvvan${RESET}"
       sleep 4
-      return  # بازگشت به منوی اصلی
+      return
     fi
   done
   
-  # نمایش پیام تکمیل عملیات
   clear
   tput cup $middle_row $(( (term_width - 60) / 2 ))
   echo -e "${LIGHT_BLUE}The operation is complete! Thank you for waiting 😊${RESET}"
   tput cup $((term_height - 1)) $(( (term_width - 35) / 2 ))
   echo -e "${WHITE}Designed and developed by Shuvvan${RESET}"
   sleep 5
-  return  # بازگشت به منوی اصلی
+  return
 }
 
 # نمایش منوی اصلی و گزینه‌ها
 show_menu() {
   show_welcome_message
 
-  # اضافه کردن یک خط فاصله از بالای صفحه برای اطلاعات سیستم
-  echo -e "\n"  # یک سطر فاصله از بالای صفحه
+  echo -e "\n"
 
-  # نمایش اطلاعات سیستم قبل از منو
   IP_ADDRESS=$(hostname -I | awk '{print $1}')
   FIREWALL_STATUS=$(sudo ufw status | grep -q "Status: active" && echo "✅ ON" || echo "❌ OFF")
   USER_STATUS=$(if [ "$(id -u)" -eq 0 ]; then echo "Admin (Root User)"; else echo "$(whoami) (Not Admin)"; fi)
-  SYSTEM_LOAD=$(cat /proc/loadavg | awk '{print $1}') # بار سیستم در دقیقه اخیر
-  
-  # نمایش اطلاعات سیستم در یک خط
+  SYSTEM_LOAD=$(cat /proc/loadavg | awk '{print $1}')
+
   term_width=$(tput cols)
   printf "%*s" $(( (term_width - 100) / 2 )) ""
   echo -e "${YELLOW}* IP Address: $IP_ADDRESS  |  Firewall: $FIREWALL_STATUS  |  User: $USER_STATUS  |  System Load: $SYSTEM_LOAD *${RESET}"
 
-  # خط جداکننده
   echo -e "\n$(printf '%*s' "$term_width" | tr ' ' '-')\n"
   
   echo -e "🖥️  Options:\n"
@@ -139,11 +142,11 @@ show_menu() {
   echo -e "${RED}Press ESC to exit${RESET}\n"
 }
 
+# اجرای اسکریپت
+show_intro_logo  # نمایش اینترولوگو قبل از ادامه به منو
 
-
-# حلقه اصلی برای نمایش منو و دریافت ورودی کاربر
 while true; do
-  echo -e "\033[0m"  # بازنشانی تنظیمات رنگ
+  echo -e "\033[0m"
   show_menu
   read -rsn1 input
   case "$input" in
@@ -152,11 +155,9 @@ while true; do
       ;;
     $'\e')
       clear
-      # عرض و ارتفاع ترمینال برای تنظیم وسط‌چین کردن
       term_width=$(tput cols)
       term_height=$(tput lines)
 
-      # پیام خروج در وسط صفحه
       tput cup $(( term_height / 2 - 2 )) $(( (term_width - 50) / 2 ))
       echo -e "${WHITE}Thank you for choosing and using komak 🥰${RESET}"
       tput cup $(( term_height / 2 )) $(( (term_width - 50) / 2 ))
@@ -165,7 +166,7 @@ while true; do
       echo -e "${WHITE}Developed by Shwan in cooperation with Ehsan${RESET}"
       
       sleep 5
-      clear  # پاک کردن صفحه پس از نمایش پیام خروج
+      clear
       exit 0
       ;;
     *)
