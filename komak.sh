@@ -1,24 +1,24 @@
 #!/bin/bash
 
-# تابع برای نمایش اینترولوگو در وسط صفحه
+# تابع برای نمایش اینترولوگو در وسط صفحه با سایز 30 و bold
 show_intro_logo() {
   clear
   RESET='\033[0m'
   BOLD='\033[1m'
   
-  logo="KOMAK 3.2.8"
+  logo="KOMAK 3.2.9"
   term_width=$(tput cols)
   term_height=$(tput lines)
   logo_width=${#logo}
   
-  # محاسبه محل نمایش اینترولوگو به صورت عمودی و افقی
-  padding_x=$(( (term_width - logo_width) / 2 ))
-  padding_y=$(( term_height / 2 ))
+  # محاسبه مرکز صفحه برای نمایش اینترولوگو
+  center_col=$(( (term_width - logo_width) / 2 ))
+  center_row=$(( term_height / 2 ))
 
-  # انتقال مکان‌نما به موقعیت محاسبه شده و نمایش اینترولوگو با سایز فونت 30 و بولد
-  tput cup $padding_y $padding_x
-  echo -e "${BOLD}\033[30m${logo}${RESET}"
-  sleep 3
+  # تنظیم فونت سایز به 30 و bold بودن
+  tput cup $center_row $center_col
+  echo -e "${BOLD}${logo}${RESET}"
+  sleep 2
 }
 
 # تابع برای نمایش پیام خوش‌آمدگویی در وسط صفحه با کادر ستاره‌ای و رنگ قرمز
@@ -29,7 +29,7 @@ show_welcome_message() {
   RESET='\033[0m'
   BOLD='\033[1m'
 
-  message="Welcome to Komak 3.2.8 Project!"
+  message="Welcome to Komak 3.2.9 Project!"
   term_width=$(tput cols)
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
