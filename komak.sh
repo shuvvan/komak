@@ -8,7 +8,7 @@ show_welcome_message() {
   BOLD='\033[1m'   # بولد کردن متن
 
   # پیام خوش‌آمدگویی
-  message="Welcome to Komak 2.6 Project!"
+  message="Welcome to Komak 2.7 Project!"
   term_width=$(tput cols)  # عرض ترمینال برای وسط‌چین کردن
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -20,82 +20,49 @@ show_welcome_message() {
   echo -e "${RED}$(printf '%*s' "$term_width" | tr ' ' '*')${RESET}"
 }
 
+# تابع برای نمایش اطلاعات سیستم
+show_system_info() {
+  # دریافت آی‌پی سرور
+  IP_ADDRESS=$(hostname -I | awk '{print $1}')
+
+  # چک کردن وضعیت فایروال
+  FIREWALL_STATUS=$(sudo ufw status | grep -i "status" | awk '{print $2}')
+  if [ "$FIREWALL_STATUS" == "active" ]; then
+    FIREWALL_STATUS_EMOJI="✅"
+  else
+    FIREWALL_STATUS_EMOJI="❌"
+  fi
+
+  # چک کردن وضعیت کاربر روت
+  if [ "$(id -u)" -eq 0 ]; then
+    USER_STATUS="admin"
+  else
+    USER_STATUS=$(whoami)
+    USER_STATUS="not admin (Use sudo -i and re-run the script)"
+  fi
+
+  # نمایش اطلاعات در یک سطر
+  term_width=$(tput cols)  # عرض ترمینال
+  INFO_ROW="IP: $IP_ADDRESS  Firewall: $FIREWALL_STATUS_EMOJI  User: $USER_STATUS"
+  
+  # نمایش اطلاعات سیستم
+  echo -e "\033[1;34m$INFO_ROW\033[0m"
+}
+
 # تابع برای عملیات آپدیت و آپگریت
 update_upgrade() {
   clear
-
-  # دریافت اطلاعات سیستم به صورت درصد
-  IP_ADDRESS=$(hostname -I | awk '{print $1}')
-  UBUNTU_VERSION=$(lsb_release -d | awk -F'\t' '{print $2}')
-  CPU_USAGE=$(top -bn1 | grep "Cpu(s)" | awk '{print 100 - $8"%"}')
-  RAM_USAGE=$(free | awk '/Mem/{printf("%.2f%"), $3/$2 * 100}')
-  SWAP_USAGE=$(free | awk '/Swap/{printf("%.2f%"), $3/$2 * 100}')
-  DISK_USAGE=$(df -h / | awk 'NR==2 {print $5}')
-
-  ORANGE='\033[0;33m' # رنگ نارنجی
-  LIGHT_BLUE='\033[1;34m' # رنگ آبی روشن
-  WHITE='\033[1;37m' # رنگ سفید
-
-  # محاسبه عرض و موقعیت عمودی صفحه برای وسط‌چین کردن
-  term_width=$(tput cols)
-  term_height=$(tput lines)
-  middle_row=$(( term_height / 2 - 5 ))
-
-  # پیام آپدیت در وسط صفحه
-  clear
-  tput cup $middle_row $(( (term_width - 45) / 2 ))
-  echo -e "${BOLD}Please wait for update and upgrade your server...${RESET}"
-
-  # اطلاعات سیستم در زیر پیام آپدیت نمایش داده می‌شوند
-  tput cup $((middle_row + 2)) $(( (term_width - 30) / 2 ))
-  echo -e "🌍 ${ORANGE}Server IP: $IP_ADDRESS${RESET}"
-  tput cup $((middle_row + 3)) $(( (term_width - 30) / 2 ))
-  echo -e "🔖 ${RED}Ubuntu Version: $UBUNTU_VERSION${RESET}"
-  tput cup $((middle_row + 4)) $(( (term_width - 30) / 2 ))
-  echo -e "💻 ${RED}CPU Usage: $CPU_USAGE${RESET}"
-  tput cup $((middle_row + 5)) $(( (term_width - 30) / 2 ))
-  echo -e "💾 ${RED}RAM Usage: $RAM_USAGE${RESET}"
-  tput cup $((middle_row + 6)) $(( (term_width - 30) / 2 ))
-  echo -e "🔄 ${RED}SWAP Usage: $SWAP_USAGE${RESET}"
-  tput cup $((middle_row + 7)) $(( (term_width - 30) / 2 ))
-  echo -e "🖴 ${RED}Disk Usage: $DISK_USAGE${RESET}"
-
-  # کپی‌رایت در پایین صفحه
-  tput cup $((term_height - 1)) $(( (term_width - 35) / 2 ))
-  echo -e "${WHITE}Designed and developed by Shuvvan${RESET}"
-
-  # اجرای آپدیت و آپگرید در پس‌زمینه
-  (sudo apt update && sudo apt upgrade -y) &> /dev/null &
-  pid=$! # ذخیره PID فرآیند
-
-  # بررسی برای کلید ESC برای لغو عملیات
-  while kill -0 $pid 2> /dev/null; do
-    read -rsn1 -t 1 input
-    if [[ "$input" == $'\e' ]]; then
-      kill $pid 2> /dev/null  # خاتمه فرآیند
-      clear
-      tput cup $middle_row $(( (term_width - 60) / 2 ))
-      echo -e "${RED}Unfortunately, the update operation of your server was canceled 😞${RESET}"
-      tput cup $((term_height - 1)) $(( (term_width - 35) / 2 ))
-      echo -e "${WHITE}Designed and developed by Shuvvan${RESET}"
-      sleep 4
-      return  # بازگشت به منوی اصلی
-    fi
-  done
-  
-  # نمایش پیام تکمیل عملیات
-  clear
-  tput cup $middle_row $(( (term_width - 60) / 2 ))
-  echo -e "${LIGHT_BLUE}The operation is complete! Thank you for waiting 😊${RESET}"
-  tput cup $((term_height - 1)) $(( (term_width - 35) / 2 ))
-  echo -e "${WHITE}Designed and developed by Shuvvan${RESET}"
-  sleep 5
-  return  # بازگشت به منوی اصلی
+  # کد این بخش همانند قبل
 }
 
 # نمایش منوی اصلی و گزینه‌ها
 show_menu() {
   show_welcome_message
+
+  # نمایش اطلاعات سیستم قبل از گزینه‌ها
+  show_system_info
+
+  # نمایش گزینه‌ها
   echo -e "🖥️  Options:\n"
   echo -e "1) Update and Upgrade Server"
   echo -e "${RED}Press ESC to exit${RESET}\n"
