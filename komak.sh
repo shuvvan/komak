@@ -8,7 +8,7 @@ show_welcome_message() {
   BOLD='\033[1m'   # بولد کردن متن
 
   # پیام خوش‌آمدگویی
-  message="Welcome to Komak 2.2 Project!"
+  message="Welcome to Komak 2.3 Project!"
   term_width=$(tput cols)  # عرض ترمینال برای وسط‌چین کردن
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -106,14 +106,20 @@ while true; do
       ;;
     $'\e')
       clear
-      # پیغام خروج
-      tput cup $(( (term_height / 2) - 2 )) $(( (term_width - 50) / 2 ))
+      # عرض و ارتفاع ترمینال برای تنظیم وسط‌چین کردن
+      term_width=$(tput cols)
+      term_height=$(tput lines)
+
+      # پیام خروج در وسط صفحه
+      tput cup $(( term_height / 2 - 2 )) $(( (term_width - 50) / 2 ))
       echo -e "${WHITE}Thank you for choosing and using komak 🥰${RESET}"
-      tput cup $(( (term_height / 2) )) $(( (term_width - 50) / 2 ))
+      tput cup $(( term_height / 2 )) $(( (term_width - 50) / 2 ))
       echo -e "${WHITE}Hope to see you again soon${RESET}"
-      tput cup $(( (term_height / 2) + 2 )) $(( (term_width - 50) / 2 ))
+      tput cup $(( term_height / 2 + 2 )) $(( (term_width - 50) / 2 ))
       echo -e "${WHITE}Developed by Shwan in cooperation with Ehsan${RESET}"
+      
       sleep 5
+      clear  # پاک کردن صفحه پس از نمایش پیام خروج
       exit 0
       ;;
     *)
@@ -122,3 +128,4 @@ while true; do
       ;;
   esac
 done
+
