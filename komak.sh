@@ -8,7 +8,7 @@ show_welcome_message() {
   BOLD='\033[1m'   # بولد کردن متن
 
   # پیام خوش‌آمدگویی
-  message="Welcome to Komak Project!"
+  message="Welcome to Komak Pro  ject!"
   term_width=$(tput cols)  # عرض ترمینال برای وسط‌چین کردن
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -73,17 +73,22 @@ show_menu() {
 
 # حلقه اصلی برای نمایش منو و دریافت ورودی کاربر
 while true; do
+  # پاک‌سازی تنظیمات رنگ و اطمینان از نمایش صحیح پس از هر اجرا
+  echo -e "\033[0m"  # بازنشانی تنظیمات رنگ
   show_menu
   read -rsn1 input
   case "$input" in
     "1")
+      # عملیات آپدیت و آپگرید
       update_upgrade
       ;;
     $'\e')
-      echo -e "Exiting..."
+      # خروج از اسکریپت
+      echo -e "\033[0mExiting..."  # بازنشانی رنگ و سپس خروج
       exit 0
       ;;
     *)
+      # نمایش پیام خطا برای ورودی‌های نامعتبر
       echo -e "Invalid option. Please press 1 or ESC."
       sleep 1
       ;;
