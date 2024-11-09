@@ -1,12 +1,17 @@
 #!/bin/bash
 
+# تنظیم پس‌زمینه به سیاه و متن به سفید
+tput setab 0  # Black background
+tput setaf 7  # White text
+clear
+
 # تابع برای نمایش اینترولوگو در وسط صفحه با سایز 30 و bold
 show_intro_logo() {
   clear
   RESET='\033[0m'
   BOLD='\033[1m'
   
-  logo="KOMAK 3.5.5"
+  logo="KOMAK 3.5.6"
   term_width=$(tput cols)
   term_height=$(tput lines)
   logo_width=${#logo}
@@ -29,7 +34,7 @@ show_welcome_message() {
   RESET='\033[0m'
   BOLD='\033[1m'
 
-  message="Welcome to Komak 3.5.5 Project!"
+  message="Welcome to Komak 3.5.6 Project!"
   term_width=$(tput cols)
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
