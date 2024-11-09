@@ -6,7 +6,7 @@ show_intro_logo() {
   RESET='\033[0m'
   BOLD='\033[1m'
   
-  logo="KOMAK 3.3"
+  logo="KOMAK 3.3.1"
   term_width=$(tput cols)
   term_height=$(tput lines)
   logo_width=${#logo}
@@ -29,7 +29,7 @@ show_welcome_message() {
   RESET='\033[0m'
   BOLD='\033[1m'
 
-  message="Welcome to Komak 3.3 Project!"
+  message="Welcome to Komak 3.3.1 Project!"
   term_width=$(tput cols)
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -50,15 +50,15 @@ check_firewall() {
   fi
 }
 
-# تابع برای تغییر وضعیت فایروال
+# تابع برای روشن/خاموش کردن فایروال
 toggle_firewall() {
   sudo ufw status | grep -q "Status: active"
   if [ $? -eq 0 ]; then
-    sudo ufw disable &> /dev/null
-    echo -e "✅ Firewall turned OFF"
+    sudo ufw disable
+    echo -e "❌ Firewall has been turned OFF."
   else
-    sudo ufw enable &> /dev/null
-    echo -e "✅ Firewall turned ON"
+    sudo ufw enable
+    echo -e "✅ Firewall has been turned ON."
   fi
 }
 
@@ -153,7 +153,7 @@ show_menu() {
   
   echo -e "🖥️  Options:\n"
   echo -e "1) Update and Upgrade Server"
-  echo -e "2) Firewall (Enable/Disable)"
+  echo -e "2) Toggle Firewall"
   echo -e "${RED}Press ESC to exit${RESET}\n"
 }
 
@@ -170,6 +170,7 @@ while true; do
       ;;
     "2")
       toggle_firewall
+      sleep 2
       ;;
     $'\e')
       clear
@@ -181,12 +182,12 @@ while true; do
       tput cup $(( term_height / 2 )) $(( (term_width - 50) / 2 ))
       echo -e "${WHITE}Hope to see you again soon${RESET}"
       tput cup $(( term_height / 2 + 1 )) $(( (term_width - 50) / 2 ))
-      echo -e "${WHITE}Goodbye 😢${RESET}"
-      sleep 3
-      break
+      echo -e "${WHITE}Designed and developed by Shuvvan${RESET}"
+
+      exit 0
       ;;
     *)
-      continue
+      echo -e "Invalid input, try again."
       ;;
   esac
 done
