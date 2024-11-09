@@ -8,7 +8,7 @@ show_welcome_message() {
   BOLD='\033[1m'   # بولد کردن متن
 
   # پیام خوش‌آمدگویی
-  message="Welcome to Komak 1.5 Project!"
+  message="Welcome to Komak v1.7 Project!"
   term_width=$(tput cols)  # عرض ترمینال برای وسط‌چین کردن
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -37,26 +37,26 @@ update_upgrade() {
   # محاسبه عرض و موقعیت عمودی صفحه برای وسط‌چین کردن
   term_width=$(tput cols)
   term_height=$(tput lines)
-  middle_row=$(( term_height / 2 - 2 ))
+  middle_row=$(( term_height / 2 - 5 ))
 
   # پیام آپدیت در وسط صفحه
   clear
-  tput cup $middle_row
+  tput cup $middle_row $(( (term_width - 45) / 2 ))
   echo -e "${BOLD}Please wait for update and upgrade your server...${RESET}"
 
   # اطلاعات سیستم در زیر پیام آپدیت نمایش داده می‌شوند
-  tput cup $((middle_row + 2))
-  echo -e "${ORANGE}Server IP: $IP_ADDRESS${RESET}"
-  tput cup $((middle_row + 3))
-  echo -e "${RED}Ubuntu Version: $UBUNTU_VERSION${RESET}"
-  tput cup $((middle_row + 4))
-  echo -e "${RED}CPU: $CPU_INFO${RESET}"
-  tput cup $((middle_row + 5))
-  echo -e "${RED}Total RAM: ${RAM_TOTAL} MB${RESET}"
+  tput cup $((middle_row + 2)) $(( (term_width - 30) / 2 ))
+  echo -e "🌍 ${ORANGE}Server IP: $IP_ADDRESS${RESET}"
+  tput cup $((middle_row + 3)) $(( (term_width - 30) / 2 ))
+  echo -e "🔖 ${RED}Ubuntu Version: $UBUNTU_VERSION${RESET}"
+  tput cup $((middle_row + 4)) $(( (term_width - 30) / 2 ))
+  echo -e "💻 ${RED}CPU: $CPU_INFO${RESET}"
+  tput cup $((middle_row + 5)) $(( (term_width - 30) / 2 ))
+  echo -e "💾 ${RED}Total RAM: ${RAM_TOTAL} MB${RESET}"
 
   # کپی‌رایت در پایین صفحه
-  tput cup $((term_height - 1))
-  echo -e "${WHITE}(c) Shuvvan${RESET}"
+  tput cup $((term_height - 1)) $(( (term_width - 35) / 2 ))
+  echo -e "${WHITE}Designed and developed by Shuvvan${RESET}"
 
   # اجرای آپدیت و آپگرید در پس‌زمینه
   (sudo apt update && sudo apt upgrade -y) &> /dev/null &
@@ -68,10 +68,10 @@ update_upgrade() {
     if [[ "$input" == $'\e' ]]; then
       kill $pid 2> /dev/null  # خاتمه فرآیند
       clear
-      tput cup $middle_row
-      echo -e "${RED}Unfortunately, the update operation of your server was canceled${RESET}"
-      tput cup $((term_height - 1))
-      echo -e "${WHITE}(c) Shuvvan${RESET}"
+      tput cup $middle_row $(( (term_width - 60) / 2 ))
+      echo -e "${RED}Unfortunately, the update operation of your server was canceled 😞${RESET}"
+      tput cup $((term_height - 1)) $(( (term_width - 35) / 2 ))
+      echo -e "${WHITE}Designed and developed by Shuvvan${RESET}"
       sleep 4
       return  # بازگشت به منوی اصلی
     fi
@@ -79,10 +79,10 @@ update_upgrade() {
   
   # نمایش پیام تکمیل عملیات
   clear
-  tput cup $middle_row
-  echo -e "${LIGHT_BLUE}The operation is complete! Thank you for waiting${RESET}"
-  tput cup $((term_height - 1))
-  echo -e "${WHITE}(c) Shuvvan${RESET}"
+  tput cup $middle_row $(( (term_width - 60) / 2 ))
+  echo -e "${LIGHT_BLUE}The operation is complete! Thank you for waiting 😊${RESET}"
+  tput cup $((term_height - 1)) $(( (term_width - 35) / 2 ))
+  echo -e "${WHITE}Designed and developed by Shuvvan${RESET}"
   sleep 5
   return  # بازگشت به منوی اصلی
 }
@@ -105,7 +105,15 @@ while true; do
       update_upgrade
       ;;
     $'\e')
-      echo -e "\033[0mExiting..."
+      clear
+      # پیغام خروج
+      tput cup $(( (term_height / 2) - 2 )) $(( (term_width - 50) / 2 ))
+      echo -e "${WHITE}Thank you for choosing and using komak 🥰${RESET}"
+      tput cup $(( (term_height / 2) )) $(( (term_width - 50) / 2 ))
+      echo -e "${WHITE}Hope to see you again soon${RESET}"
+      tput cup $(( (term_height / 2) + 2 )) $(( (term_width - 50) / 2 ))
+      echo -e "${WHITE}Developed by Shwan in cooperation with Ehsan${RESET}"
+      sleep 5
       exit 0
       ;;
     *)
