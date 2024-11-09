@@ -9,7 +9,7 @@ show_welcome_message() {
   BOLD='\033[1m'   # بولد کردن متن
 
   # پیام خوش‌آمدگویی
-  message="Welcome to Komak 3.0 Project!"
+  message="Welcome to Komak 3.0.1 Project!"
   term_width=$(tput cols)  # عرض ترمینال برای وسط‌چین کردن
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -21,19 +21,24 @@ show_welcome_message() {
   echo -e "${RED}$(printf '%*s' "$term_width" | tr ' ' '*')${RESET}"
 }
 
-# تابع برای نمایش پیام "komak 3.0" در وسط صفحه
-show_komak_version() {
+# تابع برای نمایش پیام معرفی Komak 3.0
+show_intro_message() {
   clear
-  KOMAK_MESSAGE="komak 3.0"
+  LIGHT_BLUE='\033[1;34m' # رنگ آبی روشن
+  BOLD='\033[1m'          # بولد کردن متن
+  RESET='\033[0m'         # بازنشانی رنگ‌ها
+
+  # پیام معرفی Komak 3.0
+  intro_message="KOMAK 3.0"
   term_width=$(tput cols)  # عرض ترمینال برای وسط‌چین کردن
-  message_width=${#KOMAK_MESSAGE}
-  padding=$(( (term_width - message_width) / 2 ))
+  intro_message_width=${#intro_message}
+  padding=$(( (term_width - intro_message_width) / 2 ))
 
-  # نمایش پیام "komak 3.0"
-  printf "%*s" "$padding" ""
-  echo -e "${RED}${KOMAK_MESSAGE}${RESET}"
+  # چاپ پیام در وسط صفحه با رنگ آبی روشن و بولد
+  tput cup $(( $(tput lines) / 2 - 1 )) $padding
+  echo -e "${LIGHT_BLUE}${BOLD}${intro_message}${RESET}"
 
-  # خواب 3 ثانیه‌ای
+  # صبر کردن به مدت 3 ثانیه
   sleep 3
 }
 
@@ -131,10 +136,8 @@ update_upgrade() {
 
 # نمایش منوی اصلی و گزینه‌ها
 show_menu() {
-  show_komak_version  # نمایش نسخه "komak 3.0" در وسط صفحه قبل از منو
+  show_intro_message  # نمایش پیام معرفی
 
-  # نمایش منوی اصلی پس از 3 ثانیه
-  clear
   show_welcome_message
 
   # اضافه کردن یک خط فاصله از بالای صفحه برای اطلاعات سیستم
@@ -163,23 +166,13 @@ show_menu() {
 while true; do
   echo -e "\033[0m"  # بازنشانی تنظیمات رنگ
   show_menu
-  read -rsn1 input
-  case "$input" in
-    "1")
+  read -p "Enter your choice: " choice
+  case $choice in
+    1)
       update_upgrade
       ;;
-    $'\e')
-      clear
-      # عرض و ارتفاع ترمینال برای تنظیم وسط‌چین کردن
-      term_width=$(tput cols)
-      term_height=$(tput lines)
-      tput cup $((term_height / 2)) $(( (term_width - 35) / 2 ))
-      echo -e "${RED}Goodbye!${RESET}"
-      sleep 2
-      exit 0
-      ;;
     *)
-      echo -e "Invalid option!"
+      echo -e "\033[0;31mInvalid option. Please try again.\033[0m"
       ;;
   esac
 done
