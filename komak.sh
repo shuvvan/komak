@@ -6,7 +6,7 @@ show_intro_logo() {
   RESET='\033[0m'
   BOLD='\033[1m'
   
-  logo="KOMAK 3.5.1"
+  logo="KOMAK 3.5.2"
   term_width=$(tput cols)
   term_height=$(tput lines)
   logo_width=${#logo}
@@ -29,7 +29,7 @@ show_welcome_message() {
   RESET='\033[0m'
   BOLD='\033[1m'
 
-  message="Welcome to Komak 3.5.1 Project!"
+  message="Welcome to Komak 3.5.2 Project!"
   term_width=$(tput cols)
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -40,26 +40,23 @@ show_welcome_message() {
   echo -e "${RED}$(printf '%*s' "$term_width" | tr ' ' '*')${RESET}"
 }
 
-
-# تابع برای دریافت ایموجی پرچم کشور بر اساس IP
-get_flag_emoji() {
+# تابع برای دریافت کشور مالک آدرس IP
+get_country_flag() {
   IP_ADDRESS=$(hostname -I | awk '{print $1}')
-  COUNTRY_CODE=$(curl -s "https://ipapi.co/$IP_ADDRESS/country/")
-  if [ -z "$COUNTRY_CODE" ]; then
-    FLAG="🌐"  # پیش‌فرض در صورت عدم شناسایی
-  else
-    FLAG=$(echo "$COUNTRY_CODE" | awk '{printf "\xF0\x9F\x87" $1}' | sed 's/./& /g' | tr 'A-Z' '🇦🇿')
-  fi
-  echo "$FLAG"
-}
+  country_code=$(curl -s "https://ipinfo.io/${IP_ADDRESS}/country" | tr -d '\n')
 
-# تابع برای نمایش اطلاعات سرور با پرچم کشور
-display_ip_with_flag() {
-  IP_ADDRESS=$(hostname -I | awk '{print $1}')
-  FLAG=$(get_flag_emoji)
-  echo -e "🌍 ${ORANGE}Server IP: $IP_ADDRESS $FLAG${RESET}"
+  case $country_code in
+    US) flag="🇺🇸" ;;
+    CA) flag="🇨🇦" ;;
+    IR) flag="🇮🇷" ;;
+    DE) flag="🇩🇪" ;;
+    FR) flag="🇫🇷" ;;
+    GB) flag="🇬🇧" ;;
+    # افزودن کشور‌های دیگر در صورت نیاز
+    *) flag="🏳️" ;;
+  esac
+  echo "$flag"
 }
-
 
 # تابع برای بررسی وضعیت فایروال
 check_firewall() {
@@ -149,14 +146,15 @@ show_menu() {
 
   echo -e "\n"
 
-  display_ip_with_flag  # نمایش IP سرور همراه با پرچم کشور
+  IP_ADDRESS=$(hostname -I | awk '{print $1}')
   FIREWALL_STATUS=$(sudo ufw status | grep -q "Status: active" && echo "✅ ON" || echo "❌ OFF")
   USER_STATUS=$(if [ "$(id -u)" -eq 0 ]; then echo "Admin (Root User)"; else echo "$(whoami) (Not Admin)"; fi)
   SYSTEM_LOAD=$(cat /proc/loadavg | awk '{print $1}')
+  COUNTRY_FLAG=$(get_country_flag)
 
   term_width=$(tput cols)
   printf "%*s" $(( (term_width - 100) / 2 )) ""
-  echo -e "${YELLOW}* Firewall: $FIREWALL_STATUS  |  User: $USER_STATUS  |  System Load: $SYSTEM_LOAD *${RESET}"
+  echo -e "${YELLOW}* IP Address: $IP_ADDRESS $COUNTRY_FLAG |  Firewall: $FIREWALL_STATUS  |  User: $USER_STATUS  |  System Load: $SYSTEM_LOAD *${RESET}"
 
   echo -e "\n$(printf '%*s' "$term_width" | tr ' ' '-')\n"
   
@@ -172,29 +170,10 @@ while true; do
   echo -e "\033[0m"
   show_menu
   read -rsn1 input
+  
   case "$input" in
-    "1")
-      update_upgrade
-      ;;
-    $'\e')
-      clear
-      term_width=$(tput cols)
-      term_height=$(tput lines)
-
-      tput cup $(( term_height / 2 - 2 )) $(( (term_width - 50) / 2 ))
-      echo -e "${WHITE}Thank you for choosing and using komak 🥰${RESET}"
-      tput cup $(( term_height / 2 )) $(( (term_width - 50) / 2 ))
-      echo -e "${WHITE}Hope to see you again soon${RESET}"
-      tput cup $(( term_height / 2 + 2 )) $(( (term_width - 50) / 2 ))
-      echo -e "${WHITE}Developed by Shwan in cooperation with Ehsan${RESET}"
-      
-      sleep 5
-      clear
-      exit 0
-      ;;
-    *)
-      echo -e "Invalid option. Please press 1 or ESC."
-      sleep 1
-      ;;
+    1) update_upgrade ;;
+    $'\e') clear; exit 0 ;;
+    *) echo -e "${RED}Invalid choice!${RESET}" ;;
   esac
 done
