@@ -8,15 +8,16 @@ show_intro_logo() {
   BOLD='\033[1m'
   RESET='\033[0m'
   
-  logo="KOMAK 3.2.2"
+  logo="KOMAK 3.2.3"
   term_width=$(tput cols)
   term_height=$(tput lines)
   logo_width=${#logo}
-  padding=$(( (term_width - logo_width) / 2 ))
+  padding=$(( (term_width - logo_width) / 8 ))
 
   tput cup $((term_height / 2)) $padding
-  echo -e "${BLACK_BG}${WHITE}${BOLD}\033[1;30m${logo}${RESET}"
-  sleep 2
+  echo -e "${BLACK_BG}\033[40m${logo}${RESET}"
+  echo -e "${WHITE}${BOLD}\033[1;30m${logo}${RESET}"
+  sleep 4
 }
 
 # تابع برای نمایش پیام خوش‌آمدگویی در وسط صفحه با کادر ستاره‌ای و رنگ قرمز
@@ -27,7 +28,7 @@ show_welcome_message() {
   RESET='\033[0m'
   BOLD='\033[1m'
 
-  message="Welcome to Komak 3.2.2 Project!"
+  message="Welcome to Komak 3.2.3 Project!"
   term_width=$(tput cols)
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
