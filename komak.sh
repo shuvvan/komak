@@ -8,7 +8,7 @@ show_welcome_message() {
   BOLD='\033[1m'   # بولد کردن متن
 
   # پیام خوش‌آمدگویی
-  message="Welcome to Komak 2.5.2 Project!"
+  message="Welcome to Komak 2.5.3 Project!"
   term_width=$(tput cols)  # عرض ترمینال برای وسط‌چین کردن
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -33,9 +33,25 @@ get_firewall_status() {
 get_system_info() {
   IP_ADDRESS=$(hostname -I | awk '{print $1}')
   IPV6_ADDRESS=$(hostname -I | awk '{print $2}')
+  
+  # برای جلوگیری از تقسیم بر صفر در CPU و RAM
   CPU_USAGE=$(top -bn1 | grep "Cpu(s)" | awk '{print 100 - $8"%"}')
-  RAM_USAGE=$(free | awk '/Mem/{printf("%.2f%"), $3/$2 * 100}')
-  SWAP_USAGE=$(free | awk '/Swap/{printf("%.2f%"), $3/$2 * 100}')
+  RAM_TOTAL=$(free | awk '/Mem/{print $2}')
+  RAM_USED=$(free | awk '/Mem/{print $3}')
+  if [ "$RAM_TOTAL" -gt 0 ]; then
+    RAM_USAGE=$(echo "scale=2; $RAM_USED / $RAM_TOTAL * 100" | bc)
+  else
+    RAM_USAGE="0%"
+  fi
+
+  SWAP_TOTAL=$(free | awk '/Swap/{print $2}')
+  SWAP_USED=$(free | awk '/Swap/{print $3}')
+  if [ "$SWAP_TOTAL" -gt 0 ]; then
+    SWAP_USAGE=$(echo "scale=2; $SWAP_USED / $SWAP_TOTAL * 100" | bc)
+  else
+    SWAP_USAGE="0%"
+  fi
+
   DISK_USAGE=$(df -h / | awk 'NR==2 {print $5}')
   DISK_SIZE=$(df -h / | awk 'NR==2 {print $2}')
   FIREWALL_STATUS=$(get_firewall_status)
