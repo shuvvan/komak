@@ -6,7 +6,7 @@ show_intro_logo() {
   RESET='\033[0m'
   BOLD='\033[1m'
   
-  logo="KOMAK 3.4"
+  logo="KOMAK 3.2.9"
   term_width=$(tput cols)
   term_height=$(tput lines)
   logo_width=${#logo}
@@ -29,7 +29,7 @@ show_welcome_message() {
   RESET='\033[0m'
   BOLD='\033[1m'
 
-  message="Welcome to Komak 3.4 Project!"
+  message="Welcome to Komak 3.2.9 Project!"
   term_width=$(tput cols)
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
