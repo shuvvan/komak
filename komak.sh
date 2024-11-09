@@ -9,7 +9,7 @@ show_welcome_message() {
   BOLD='\033[1m'   # بولد کردن متن
 
   # پیام خوش‌آمدگویی
-  message="Welcome to Komak 2.9.1 Project!"
+  message="Welcome to Komak 2.9.2 Project!"
   term_width=$(tput cols)  # عرض ترمینال برای وسط‌چین کردن
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -119,7 +119,7 @@ show_menu() {
 
   # نمایش اطلاعات سیستم قبل از منو
   IP_ADDRESS=$(hostname -I | awk '{print $1}')
-  FIREWALL_STATUS=$(sudo ufw status | grep -q "Status: active" && echo "ON" || echo "OFF")
+  FIREWALL_STATUS=$(sudo ufw status | grep -q "Status: active" && echo "✅ ON" || echo "❌ OFF")
   USER_STATUS=$(if [ "$(id -u)" -eq 0 ]; then echo "Admin (Root User)"; else echo "$(whoami) (Not Admin)"; fi)
   
   # نمایش اطلاعات سیستم در یک خط
