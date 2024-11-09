@@ -8,7 +8,7 @@ show_welcome_message() {
   BOLD='\033[1m'   # بولد کردن متن
 
   # پیام خوش‌آمدگویی
-  message="Welcome to Komak Pr APP"
+  message="Welcome to Komak Project!"
   term_width=$(tput cols)  # عرض ترمینال برای وسط‌چین کردن
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -65,7 +65,8 @@ update_upgrade() {
 # نمایش منوی اصلی و گزینه‌ها
 show_menu() {
   show_welcome_message
-  echo -e "\nOptions: ---------------------------"
+  # بازنشانی تنظیمات و اطمینان از چپ‌چین بودن متن
+  echo -e "\033[0m\nOptions: ---------------------------"
   echo -e "1) Update and Upgrade Server"
   echo -e "Press ESC to exit\n"
 }
