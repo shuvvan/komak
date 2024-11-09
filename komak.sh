@@ -1,22 +1,12 @@
 #!/bin/bash
 
-# تابع برای نصب ابزار GeoIP در پس‌زمینه و بدون نیاز به تایید دستی
-install_geoip() {
-  if ! command -v geoiplookup &> /dev/null; then
-    echo "Installing GeoIP tool..."
-    sudo apt update -y &> /dev/null
-    sudo apt install -y geoip-bin &> /dev/null
-  fi
-}
-
 # تابع برای نمایش اینترولوگو در وسط صفحه با سایز 30 و bold
 show_intro_logo() {
-  install_geoip &  # نصب ابزار GeoIP در پس‌زمینه
   clear
   RESET='\033[0m'
   BOLD='\033[1m'
   
-  logo="KOMAK 3.5.3"
+  logo="KOMAK 3.5.5"
   term_width=$(tput cols)
   term_height=$(tput lines)
   logo_width=${#logo}
@@ -31,28 +21,6 @@ show_intro_logo() {
   sleep 2
 }
 
-# تابع برای دریافت کشور مالک آدرس IP
-get_country_flag() {
-  IP_ADDRESS=$(hostname -I | awk '{print $1}')
-  
-  if command -v geoiplookup &> /dev/null; then
-    country_code=$(geoiplookup "$IP_ADDRESS" | awk -F: '{print $2}' | awk '{print $1}' | tr -d '[:space:]')
-
-    case $country_code in
-      "IR") flag="🇮🇷" ;;
-      "US") flag="🇺🇸" ;;
-      "CA") flag="🇨🇦" ;;
-      "DE") flag="🇩🇪" ;;
-      "FR") flag="🇫🇷" ;;
-      "GB") flag="🇬🇧" ;;
-      *) flag="🏳️" ;;  # پیش‌فرض
-    esac
-  else
-    flag="🏳️"  # در صورت عدم نصب
-  fi
-  echo "$flag"
-}
-
 # تابع برای نمایش پیام خوش‌آمدگویی در وسط صفحه با کادر ستاره‌ای و رنگ قرمز
 show_welcome_message() {
   clear
@@ -61,7 +29,7 @@ show_welcome_message() {
   RESET='\033[0m'
   BOLD='\033[1m'
 
-  message="Welcome to Komak 3.5.3 Project!"
+  message="Welcome to Komak 3.5.5 Project!"
   term_width=$(tput cols)
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -164,25 +132,48 @@ show_menu() {
   FIREWALL_STATUS=$(sudo ufw status | grep -q "Status: active" && echo "✅ ON" || echo "❌ OFF")
   USER_STATUS=$(if [ "$(id -u)" -eq 0 ]; then echo "Admin (Root User)"; else echo "$(whoami) (Not Admin)"; fi)
   SYSTEM_LOAD=$(cat /proc/loadavg | awk '{print $1}')
-  COUNTRY_FLAG=$(get_country_flag)
 
   term_width=$(tput cols)
   printf "%*s" $(( (term_width - 100) / 2 )) ""
-  echo -e "${YELLOW}* IP Address: $IP_ADDRESS $COUNTRY_FLAG | Firewall: $FIREWALL_STATUS | User: $USER_STATUS | System Load: $SYSTEM_LOAD *${RESET}"
+  echo -e "${YELLOW}* IP Address: $IP_ADDRESS  |  Firewall: $FIREWALL_STATUS  |  User: $USER_STATUS  |  System Load: $SYSTEM_LOAD *${RESET}"
 
-  echo -e "\n${BOLD}Choose an option:${RESET}"
-  echo -e "1. Update & Upgrade Server"
-  echo -e "${RED}ESC) Exit${RESET}"
+  echo -e "\n$(printf '%*s' "$term_width" | tr ' ' '-')\n"
+  
+  echo -e "🖥️  Options:\n"
+  echo -e "1) Update and Upgrade Server"
+  echo -e "${RED}Press ESC to exit${RESET}\n"
 }
 
-show_intro_logo
-show_menu
+# اجرای اسکریپت
+show_intro_logo  # نمایش اینترولوگو قبل از ادامه به منو
 
 while true; do
+  echo -e "\033[0m"
+  show_menu
   read -rsn1 input
   case "$input" in
-    1) update_upgrade ;;
-    $'\e') clear; exit 0 ;;
-    *) echo -e "${RED}Invalid choice!${RESET}" ;;
+    "1")
+      update_upgrade
+      ;;
+    $'\e')
+      clear
+      term_width=$(tput cols)
+      term_height=$(tput lines)
+
+      tput cup $(( term_height / 2 - 2 )) $(( (term_width - 50) / 2 ))
+      echo -e "${WHITE}Thank you for choosing and using komak 🥰${RESET}"
+      tput cup $(( term_height / 2 )) $(( (term_width - 50) / 2 ))
+      echo -e "${WHITE}Hope to see you again soon${RESET}"
+      tput cup $(( term_height / 2 + 2 )) $(( (term_width - 50) / 2 ))
+      echo -e "${WHITE}Developed by Shwan in cooperation with Ehsan${RESET}"
+      
+      sleep 5
+      clear
+      exit 0
+      ;;
+    *)
+      echo -e "Invalid option. Please press 1 or ESC."
+      sleep 1
+      ;;
   esac
 done
