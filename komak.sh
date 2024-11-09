@@ -8,7 +8,7 @@ show_welcome_message() {
   BOLD='\033[1m'   # بولد کردن متن
 
   # پیام خوش‌آمدگویی
-  message="Welcome to Komak 2.5.3 Project!"
+  message="Welcome to Komak 2.6 Project!"
   term_width=$(tput cols)  # عرض ترمینال برای وسط‌چین کردن
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -20,77 +20,83 @@ show_welcome_message() {
   echo -e "${RED}$(printf '%*s' "$term_width" | tr ' ' '*')${RESET}"
 }
 
-# تابع برای دریافت وضعیت فایروال
-get_firewall_status() {
-  if sudo ufw status | grep -q "Status: active"; then
-    echo -e "✔️ ${GREEN}Enabled${RESET}"
-  else
-    echo -e "❌ ${RED}Disabled${RESET}"
-  fi
-}
+# تابع برای عملیات آپدیت و آپگریت
+update_upgrade() {
+  clear
 
-# تابع برای دریافت اطلاعات سیستم
-get_system_info() {
+  # دریافت اطلاعات سیستم به صورت درصد
   IP_ADDRESS=$(hostname -I | awk '{print $1}')
-  IPV6_ADDRESS=$(hostname -I | awk '{print $2}')
-  
-  # برای جلوگیری از تقسیم بر صفر در CPU و RAM
+  UBUNTU_VERSION=$(lsb_release -d | awk -F'\t' '{print $2}')
   CPU_USAGE=$(top -bn1 | grep "Cpu(s)" | awk '{print 100 - $8"%"}')
-  RAM_TOTAL=$(free | awk '/Mem/{print $2}')
-  RAM_USED=$(free | awk '/Mem/{print $3}')
-  if [ "$RAM_TOTAL" -gt 0 ]; then
-    RAM_USAGE=$(echo "scale=2; $RAM_USED / $RAM_TOTAL * 100" | bc)
-  else
-    RAM_USAGE="0%"
-  fi
-
-  SWAP_TOTAL=$(free | awk '/Swap/{print $2}')
-  SWAP_USED=$(free | awk '/Swap/{print $3}')
-  if [ "$SWAP_TOTAL" -gt 0 ]; then
-    SWAP_USAGE=$(echo "scale=2; $SWAP_USED / $SWAP_TOTAL * 100" | bc)
-  else
-    SWAP_USAGE="0%"
-  fi
-
+  RAM_USAGE=$(free | awk '/Mem/{printf("%.2f%"), $3/$2 * 100}')
+  SWAP_USAGE=$(free | awk '/Swap/{printf("%.2f%"), $3/$2 * 100}')
   DISK_USAGE=$(df -h / | awk 'NR==2 {print $5}')
-  DISK_SIZE=$(df -h / | awk 'NR==2 {print $2}')
-  FIREWALL_STATUS=$(get_firewall_status)
-}
 
-# تابع برای نمایش جدول اطلاعات سیستم
-display_system_info_table() {
-  get_system_info
-  
-  # تنظیمات رنگ‌ها
-  LIGHT_BLUE='\033[1;34m' # رنگ آبی روشن
-  GREEN='\033[0;32m' # رنگ سبز
-  RED='\033[0;31m'   # رنگ قرمز
   ORANGE='\033[0;33m' # رنگ نارنجی
+  LIGHT_BLUE='\033[1;34m' # رنگ آبی روشن
   WHITE='\033[1;37m' # رنگ سفید
 
-  term_width=$(tput cols)  # عرض ترمینال
-  term_height=$(tput lines)  # ارتفاع ترمینال
-  
-  middle_row=$((term_height / 2 - 5))
+  # محاسبه عرض و موقعیت عمودی صفحه برای وسط‌چین کردن
+  term_width=$(tput cols)
+  term_height=$(tput lines)
+  middle_row=$(( term_height / 2 - 5 ))
 
-  # نمایش جدول اطلاعات سیستم در وسط صفحه
-  tput cup $middle_row 0  # تنظیم موقعیت برای چاپ در وسط صفحه
-  echo -e "${BOLD}System Information:${RESET}"
-  echo -e "------------------------------------------------------------"
-  printf "| %-25s | %-25s |\n" "IP Address" "$IP_ADDRESS"
-  printf "| %-25s | %-25s |\n" "IPv6 Address" "$IPV6_ADDRESS"
-  printf "| %-25s | %-25s |\n" "Firewall Status" "$FIREWALL_STATUS"
-  printf "| %-25s | %-25s |\n" "CPU Usage" "$CPU_USAGE"
-  printf "| %-25s | %-25s |\n" "RAM Usage" "$RAM_USAGE"
-  printf "| %-25s | %-25s |\n" "Disk Size" "$DISK_SIZE"
-  printf "| %-25s | %-25s |\n" "Disk Usage" "$DISK_USAGE"
-  echo -e "------------------------------------------------------------"
+  # پیام آپدیت در وسط صفحه
+  clear
+  tput cup $middle_row $(( (term_width - 45) / 2 ))
+  echo -e "${BOLD}Please wait for update and upgrade your server...${RESET}"
+
+  # اطلاعات سیستم در زیر پیام آپدیت نمایش داده می‌شوند
+  tput cup $((middle_row + 2)) $(( (term_width - 30) / 2 ))
+  echo -e "🌍 ${ORANGE}Server IP: $IP_ADDRESS${RESET}"
+  tput cup $((middle_row + 3)) $(( (term_width - 30) / 2 ))
+  echo -e "🔖 ${RED}Ubuntu Version: $UBUNTU_VERSION${RESET}"
+  tput cup $((middle_row + 4)) $(( (term_width - 30) / 2 ))
+  echo -e "💻 ${RED}CPU Usage: $CPU_USAGE${RESET}"
+  tput cup $((middle_row + 5)) $(( (term_width - 30) / 2 ))
+  echo -e "💾 ${RED}RAM Usage: $RAM_USAGE${RESET}"
+  tput cup $((middle_row + 6)) $(( (term_width - 30) / 2 ))
+  echo -e "🔄 ${RED}SWAP Usage: $SWAP_USAGE${RESET}"
+  tput cup $((middle_row + 7)) $(( (term_width - 30) / 2 ))
+  echo -e "🖴 ${RED}Disk Usage: $DISK_USAGE${RESET}"
+
+  # کپی‌رایت در پایین صفحه
+  tput cup $((term_height - 1)) $(( (term_width - 35) / 2 ))
+  echo -e "${WHITE}Designed and developed by Shuvvan${RESET}"
+
+  # اجرای آپدیت و آپگرید در پس‌زمینه
+  (sudo apt update && sudo apt upgrade -y) &> /dev/null &
+  pid=$! # ذخیره PID فرآیند
+
+  # بررسی برای کلید ESC برای لغو عملیات
+  while kill -0 $pid 2> /dev/null; do
+    read -rsn1 -t 1 input
+    if [[ "$input" == $'\e' ]]; then
+      kill $pid 2> /dev/null  # خاتمه فرآیند
+      clear
+      tput cup $middle_row $(( (term_width - 60) / 2 ))
+      echo -e "${RED}Unfortunately, the update operation of your server was canceled 😞${RESET}"
+      tput cup $((term_height - 1)) $(( (term_width - 35) / 2 ))
+      echo -e "${WHITE}Designed and developed by Shuvvan${RESET}"
+      sleep 4
+      return  # بازگشت به منوی اصلی
+    fi
+  done
+  
+  # نمایش پیام تکمیل عملیات
+  clear
+  tput cup $middle_row $(( (term_width - 60) / 2 ))
+  echo -e "${LIGHT_BLUE}The operation is complete! Thank you for waiting 😊${RESET}"
+  tput cup $((term_height - 1)) $(( (term_width - 35) / 2 ))
+  echo -e "${WHITE}Designed and developed by Shuvvan${RESET}"
+  sleep 5
+  return  # بازگشت به منوی اصلی
 }
 
-# تابع برای نمایش منوی اصلی و گزینه‌ها
+# نمایش منوی اصلی و گزینه‌ها
 show_menu() {
-  display_system_info_table  # نمایش جدول اطلاعات سیستم
-  echo -e "\n🖥️  Optionsss:\n"
+  show_welcome_message
+  echo -e "🖥️  Options:\n"
   echo -e "1) Update and Upgrade Server"
   echo -e "${RED}Press ESC to exit${RESET}\n"
 }
