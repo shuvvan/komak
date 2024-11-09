@@ -9,17 +9,18 @@ show_welcome_message() {
   RESET='\033[0m'
 
   # پیام خوش‌آمدگویی
-  message="Welcome to Komak Project"
+  message="Welcome to Komak Project!"
 
   # عرض ترمینال برای وسط‌چین کردن متن
   term_width=$(tput cols)
   message_width=${#message}
-  padding=$(( (term_width - message_width) / 2 ))
+  padding=$(( (term_width - message_width - 4) / 2 ))
 
   # چاپ کادر ستاره‌ای
-  printf "${RED}%${term_width}s${RESET}\n" | tr ' ' '*'
-  printf "%*s%s%*s\n" $padding "" "${RED}${message}${RESET}" $padding ""
-  printf "${RED}%${term_width}s${RESET}\n" | tr ' ' '*'
+  echo -e "${RED}$(printf '%*s' "$term_width" | tr ' ' '*')${RESET}"
+  printf "%*s" "$padding" ""
+  echo -e "${RED}* ${message} *${RESET}"
+  echo -e "${RED}$(printf '%*s' "$term_width" | tr ' ' '*')${RESET}"
 }
 
 # تابع خروج
