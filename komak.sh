@@ -8,7 +8,7 @@ show_welcome_message() {
   BOLD='\033[1m'   # بولد کردن متن
 
   # پیام خوش‌آمدگویی
-  message="W e l c o m e to Komak Project!"
+  message="Welcome to Komak v 1,3 Project!"
   term_width=$(tput cols)  # عرض ترمینال برای وسط‌چین کردن
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -20,11 +20,31 @@ show_welcome_message() {
   echo -e "${RED}$(printf '%*s' "$term_width" | tr ' ' '*')${RESET}"
 }
 
-# تابع برای عملیات آپدیت و آپگرید
+# تابع برای عملیات آپدیت و آپگریت
 update_upgrade() {
   clear
-  echo -e "${BOLD}Please wait for update and upgrade your server...${RESET}"
+
+  # دریافت اطلاعات سیستم
+  IP_ADDRESS=$(hostname -I | awk '{print $1}')
+  UBUNTU_VERSION=$(lsb_release -d | awk -F'\t' '{print $2}')
+  CPU_INFO=$(grep -m 1 'model name' /proc/cpuinfo | awk -F': ' '{print $2}')
+  RAM_TOTAL=$(free -m | awk '/Mem:/ {print $2}')
   
+  ORANGE='\033[0;33m' # رنگ نارنجی
+  LIGHT_BLUE='\033[1;34m' # رنگ آبی روشن
+  WHITE='\033[1;37m' # رنگ سفید
+  
+  # پیام آپدیت در وسط صفحه
+  echo -e "${BOLD}Please wait for update and upgrade your server...${RESET}"
+  term_width=$(tput cols)
+  
+  # چاپ اطلاعات سیستم
+  echo -e "\n${ORANGE}Server IP: $IP_ADDRESS${RESET}"
+  echo -e "${RED}Ubuntu Version: $UBUNTU_VERSION${RESET}"
+  echo -e "${RED}CPU: $CPU_INFO${RESET}"
+  echo -e "${RED}Total RAM: ${RAM_TOTAL} MB${RESET}"
+  echo -e "${WHITE}(c) Shuvvan${RESET}\n"
+
   # اجرای آپدیت و آپگرید در پس‌زمینه
   (sudo apt update && sudo apt upgrade -y) &> /dev/null &
   pid=$! # ذخیره PID فرآیند
@@ -35,16 +55,16 @@ update_upgrade() {
     if [[ "$input" == $'\e' ]]; then
       kill $pid 2> /dev/null  # خاتمه فرآیند
       clear
-      echo -e "${BOLD}Operation Canceled${RESET}"
-      sleep 2
+      echo -e "${RED}Unfortunately, the update operation of your server was canceled${RESET}"
+      sleep 4
       return  # بازگشت به منوی اصلی
     fi
   done
   
   # نمایش پیام تکمیل عملیات
   clear
-  echo -e "${BOLD}Completed${RESET}"
-  sleep 2
+  echo -e "${LIGHT_BLUE}The operation is complete! Thank you for waiting${RESET}"
+  sleep 5
   return  # بازگشت به منوی اصلی
 }
 
