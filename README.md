@@ -1,6 +1,6 @@
 <p align="center">
 <picture>
-<img width="200" height="200"  alt="کمک" src="https://raw.githubusercontent.com/shuvvan/komak/refs/heads/my/komak.png">
+<img width="200" height="200"  alt="کمک" src="https://raw.githubusercontent.com/shuvvan/komak/refs/heads/master/komak.png">
 </picture>
   </p> 
 <p align="center">
@@ -19,7 +19,7 @@
 
 
 ```
-bash <(curl -Ls https://raw.githubusercontent.com/shuvvan/komak/my/komak.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/shuvvan/komak/master/komak.sh)
 ```
 
 ## اسکرین شات<br>
