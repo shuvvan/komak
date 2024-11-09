@@ -3,11 +3,10 @@
 # تابع برای نمایش اینترولوگو در وسط صفحه
 show_intro_logo() {
   clear
-  RED='\033[0;31m'
   RESET='\033[0m'
   BOLD='\033[1m'
   
-  logo="KOMAK 3.2.7"
+  logo="KOMAK 3.2.8"
   term_width=$(tput cols)
   term_height=$(tput lines)
   logo_width=${#logo}
@@ -18,8 +17,8 @@ show_intro_logo() {
 
   # انتقال مکان‌نما به موقعیت محاسبه شده و نمایش اینترولوگو با سایز فونت 30 و بولد
   tput cup $padding_y $padding_x
-  echo -e "${RED}${BOLD}\033[30m${logo}${RESET}"
-  sleep 2
+  echo -e "${BOLD}\033[30m${logo}${RESET}"
+  sleep 3
 }
 
 # تابع برای نمایش پیام خوش‌آمدگویی در وسط صفحه با کادر ستاره‌ای و رنگ قرمز
@@ -30,7 +29,7 @@ show_welcome_message() {
   RESET='\033[0m'
   BOLD='\033[1m'
 
-  message="Welcome to Komak 3.2.7 Project!"
+  message="Welcome to Komak 3.2.8 Project!"
   term_width=$(tput cols)
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
