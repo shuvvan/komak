@@ -124,11 +124,12 @@ show_menu() {
   IP_ADDRESS=$(hostname -I | awk '{print $1}')
   FIREWALL_STATUS=$(sudo ufw status | grep -q "Status: active" && echo "✅ ON" || echo "❌ OFF")
   USER_STATUS=$(if [ "$(id -u)" -eq 0 ]; then echo "Admin (Root User)"; else echo "$(whoami) (Not Admin)"; fi)
+  SYSTEM_LOAD=$(cat /proc/loadavg | awk '{print $1}') # بار سیستم در دقیقه اخیر
   
   # نمایش اطلاعات سیستم در یک خط
   term_width=$(tput cols)
-  printf "%*s" $(( (term_width - 75) / 2 )) ""
-  echo -e "${YELLOW}* IP Address: $IP_ADDRESS  |  Firewall: $FIREWALL_STATUS  |  User: $USER_STATUS *${RESET}"
+  printf "%*s" $(( (term_width - 100) / 2 )) ""
+  echo -e "${YELLOW}* IP Address: $IP_ADDRESS  |  Firewall: $FIREWALL_STATUS  |  User: $USER_STATUS  |  System Load: $SYSTEM_LOAD *${RESET}"
 
   # خط جداکننده
   echo -e "\n$(printf '%*s' "$term_width" | tr ' ' '-')\n"
@@ -137,6 +138,7 @@ show_menu() {
   echo -e "1) Update and Upgrade Server"
   echo -e "${RED}Press ESC to exit${RESET}\n"
 }
+
 
 
 # حلقه اصلی برای نمایش منو و دریافت ورودی کاربر
