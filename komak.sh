@@ -25,44 +25,33 @@ show_welcome_message() {
   echo -e "${RED}$(printf '%*s' "$term_width" | tr ' ' '*')${RESET}"
 }
 
-# تابع برای دریافت ورودی از کاربر
-get_input() {
-  echo -e "\nEnter your choice:"
-  read -p ">> " user_input
-  echo "You entered: $user_input"
-}
-
-# تابع برای نمایش تیتر گزینه‌ها با خط تیره
-show_options() {
-  echo -e "\nOptions: ---------------------------"
-  echo -e "1. Update and Upgrade Server"
-  echo -e "2. Exit"
-}
-
 # تابع برای عملیات آپدیت و آپگریت
 update_upgrade() {
   clear
   echo -e "\n\n\n\n"
   echo -e "${BOLD}Please wait for update and upgrade your server...${RESET}"
   
-  # شمارشگر زمان
+  # اجرای آپدیت و آپگرید در پس‌زمینه
+  (sudo apt update && sudo apt upgrade -y) &> /dev/null &
+
+  # شمارشگر زمان تا پایان عملیات
   start_time=$(date +%s)
-  while true; do
+  pid=$! # گرفتن PID فرآیند پس‌زمینه
+
+  # حلقه شمارشگر تا پایان عملیات
+  while kill -0 $pid 2> /dev/null; do
     current_time=$(date +%s)
     elapsed=$((current_time - start_time))
     minutes=$((elapsed / 60))
     seconds=$((elapsed % 60))
     
-    # پاک کردن صفحه و چاپ شمارشگر
+    # پاک کردن صفحه و چاپ پیام و شمارشگر
     clear
     echo -e "${BOLD}Please wait for update and upgrade your server...${RESET}"
     echo -e "\nElapsed time: ${minutes}m ${seconds}s"
     
-    # شبیه‌سازی زمان آپدیت و آپگریت (اینجا مدت زمان را می‌توانید تغییر دهید)
+    # یک ثانیه مکث بین بروزرسانی شمارشگر
     sleep 1
-    if [ $elapsed -ge 10 ]; then  # مدت زمان را می‌توان تغییر داد
-      break
-    fi
   done
   
   # نمایش پیام تکمیل
@@ -75,23 +64,18 @@ update_upgrade() {
 show_welcome_message
 
 # نمایش گزینه‌ها
-show_options
+echo -e "\nOptions: ---------------------------"
+echo -e "Press ESC to exit\n"
 
-# حلقه برای دریافت ورودی کاربر و انجام عملیات مورد نظر
+# حلقه برای دریافت ورودی کاربر و انجام عملیات آپدیت و آپگرید
 while true; do
-  read -p "Choose an option: " choice
-  case $choice in
-    1)
-      update_upgrade
-      break
-      ;;
-    2)
-      echo -e "Exiting..."
-      exit 0
-      ;;
-    *)
-      echo -e "Invalid option. Please choose again."
-      show_options
-      ;;
-  esac
+  read -rsn1 input
+  
+  # بررسی برای کلید ESC جهت خروج
+  if [[ "$input" == $'\e' ]]; then
+    echo -e "Exiting..."
+    exit 0
+  else
+    update_upgrade
+  fi
 done
