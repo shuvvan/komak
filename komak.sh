@@ -7,10 +7,9 @@ show_welcome_message() {
   YELLOW='\033[0;33m' # رنگ زرد
   RESET='\033[0m'  # بازنشانی رنگ‌ها
   BOLD='\033[1m'   # بولد کردن متن
-  LIGHT_BLUE='\033[1;34m' # رنگ آبی روشن
 
   # پیام خوش‌آمدگویی
-  message="KOMAK 3.0"
+  message="Welcome to Komak 3.1 Project!"
   term_width=$(tput cols)  # عرض ترمینال برای وسط‌چین کردن
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -18,11 +17,8 @@ show_welcome_message() {
   # چاپ کادر ستاره‌ای
   echo -e "${RED}$(printf '%*s' "$term_width" | tr ' ' '*')${RESET}"
   printf "%*s" "$padding" ""
-  echo -e "${RED}* ${BOLD}${LIGHT_BLUE}${message}${RESET} *${RED}"
+  echo -e "${RED}* ${BOLD}${message}${RESET} *${RED}"
   echo -e "${RED}$(printf '%*s' "$term_width" | tr ' ' '*')${RESET}"
-
-  # صبر کردن برای مدت 3 ثانیه
-  sleep 3
 }
 
 # تابع برای بررسی وضعیت فایروال
@@ -142,6 +138,7 @@ show_menu() {
   echo -e "${RED}Press ESC to exit${RESET}\n"
 }
 
+
 # حلقه اصلی برای نمایش منو و دریافت ورودی کاربر
 while true; do
   echo -e "\033[0m"  # بازنشانی تنظیمات رنگ
@@ -163,15 +160,15 @@ while true; do
       tput cup $(( term_height / 2 )) $(( (term_width - 50) / 2 ))
       echo -e "${WHITE}Hope to see you again soon${RESET}"
       tput cup $(( term_height / 2 + 2 )) $(( (term_width - 50) / 2 ))
-      echo -e "${WHITE}Exiting...${RESET}"
-
-      # منتظر 3 ثانیه قبل از خروج
-      sleep 3
+      echo -e "${WHITE}Developed by Shwan in cooperation with Ehsan${RESET}"
+      
+      sleep 5
+      clear  # پاک کردن صفحه پس از نمایش پیام خروج
       exit 0
       ;;
     *)
-      clear
-      echo -e "${RED}Invalid option, please try again!${RESET}"
+      echo -e "Invalid option. Please press 1 or ESC."
+      sleep 1
       ;;
   esac
 done
