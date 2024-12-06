@@ -26,6 +26,6 @@ bash <(curl -Ls https://raw.githubusercontent.com/shuvvan/komak/master/komak.sh)
 
 <p align="center">
 <picture>
-<img alt="shot1" src="https://raw.githubusercontent.com/shuvvan/komak/refs/heads/main/shot1.png">
+<img alt="shot1" src="https://raw.githubusercontent.com/shuvvan/komak/refs/heads/master/shot1.png">
 </picture>
   </p> 
