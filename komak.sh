@@ -1,11 +1,20 @@
 #!/bin/bash
+
+# تابع برای بررسی موجود بودن ابزار tput
+check_tput() {
+  command -v tput >/dev/null || { 
+    echo -e "\033[0;31mError: 'tput' is not installed. Please install it to continue.\033[0m"
+    exit 1
+  }
+}
+
 # تابع برای نمایش اینترولوگو در وسط صفحه با سایز 30 و bold
 show_intro_logo() {
   clear
   RESET='\033[0m'
   BOLD='\033[1m'
   
-  logo="KOMAK 3.5.8"
+  logo="KOMAK 3.5.9"
   term_width=$(tput cols)
   term_height=$(tput lines)
   logo_width=${#logo}
@@ -28,7 +37,7 @@ show_welcome_message() {
   RESET='\033[0m'
   BOLD='\033[1m'
 
-  message="Welcome to Komak 3.5.8 Project!"
+  message="Welcome to Komak 3.5.9 Project!"
   term_width=$(tput cols)
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -144,6 +153,10 @@ show_menu() {
 }
 
 # اجرای اسکریپت
+
+# اجرای تابع بررسی tput قبل از هر کاری
+check_tput
+
 show_intro_logo  # نمایش اینترولوگو قبل از ادامه به منو
 
 while true; do
