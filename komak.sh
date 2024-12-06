@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# بررسی دسترسی به sudo و تغییر خودکار به حالت root
+ensure_root_access() {
+  if [ "$(id -u)" -ne 0 ]; then
+    echo -e "\033[0;31mThe script requires root privileges. Switching to root...\033[0m"
+    exec sudo -i bash "$0" "$@"
+    exit 1
+  fi
+}
+
 # تابع برای بررسی و نصب tput در صورت نیاز
 check_and_install_tput() {
   command -v tput >/dev/null || {
@@ -20,7 +29,7 @@ show_intro_logo() {
   RESET='\033[0m'
   BOLD='\033[1m'
   
-  logo="KOMAK 3.6.0"
+  logo="KOMAK 3.6.1"
   term_width=$(tput cols)
   term_height=$(tput lines)
   logo_width=${#logo}
@@ -43,7 +52,7 @@ show_welcome_message() {
   RESET='\033[0m'
   BOLD='\033[1m'
 
-  message="Welcome to Komak 3.6.0 Project!"
+  message="Welcome to Komak 3.6.1 Project!"
   term_width=$(tput cols)
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -160,10 +169,14 @@ show_menu() {
 
 # اجرای اسکریپت
 
+# اجرای بررسی دسترسی روت
+ensure_root_access
+
 # بررسی و نصب tput قبل از اجرای سایر توابع
 check_and_install_tput
 
-show_intro_logo  # نمایش اینترولوگو قبل از ادامه به منو
+# نمایش اینترولوگو و ادامه اسکریپت
+show_intro_logo
 
 while true; do
   echo -e "\033[0m"
