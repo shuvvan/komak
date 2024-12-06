@@ -1,10 +1,16 @@
 #!/bin/bash
 
-# تابع برای بررسی موجود بودن ابزار tput
-check_tput() {
-  command -v tput >/dev/null || { 
-    echo -e "\033[0;31mError: 'tput' is not installed. Please install it to continue.\033[0m"
-    exit 1
+# تابع برای بررسی و نصب tput در صورت نیاز
+check_and_install_tput() {
+  command -v tput >/dev/null || {
+    echo -e "\033[0;33m'tput' is not installed. Attempting to install...\033[0m"
+    sudo apt update -y && sudo apt install -y ncurses-bin >/dev/null 2>&1
+    if command -v tput >/dev/null; then
+      echo -e "\033[0;32m'tput' installed successfully.\033[0m"
+    else
+      echo -e "\033[0;31mFailed to install 'tput'. Please install it manually and re-run the script.\033[0m"
+      exit 1
+    fi
   }
 }
 
@@ -14,7 +20,7 @@ show_intro_logo() {
   RESET='\033[0m'
   BOLD='\033[1m'
   
-  logo="KOMAK 3.5.9"
+  logo="KOMAK 3.6.0"
   term_width=$(tput cols)
   term_height=$(tput lines)
   logo_width=${#logo}
@@ -37,7 +43,7 @@ show_welcome_message() {
   RESET='\033[0m'
   BOLD='\033[1m'
 
-  message="Welcome to Komak 3.5.9 Project!"
+  message="Welcome to Komak 3.6.0 Project!"
   term_width=$(tput cols)
   message_width=${#message}
   padding=$(( (term_width - message_width - 4) / 2 ))
@@ -154,8 +160,8 @@ show_menu() {
 
 # اجرای اسکریپت
 
-# اجرای تابع بررسی tput قبل از هر کاری
-check_tput
+# بررسی و نصب tput قبل از اجرای سایر توابع
+check_and_install_tput
 
 show_intro_logo  # نمایش اینترولوگو قبل از ادامه به منو
 
